@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/api.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "morgan": "^1.10.0",
+    "mssql": "^6.3.1",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

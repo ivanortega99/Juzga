@@ -1,4 +1,7 @@
+const { response } = require('express');
 const dbOperations = require('../DB/dbOperations.js');
+var config = require('../DB/dbConfig');
+const sql = require('mssql');
 const controller = {};
 
 //Controladores
@@ -8,19 +11,21 @@ controller.showUsers = (request, response) => {
     })
 }
 
-controller.login = async(req, res) => {
-
-    let existe = await pool.query('SELECT * FROM usr_User WHERE usr_username = ?', [req.body.usr_username]);
-    if (existe.length == 0) {
-        res.render('error', { mensaje: "Usuario no encontrado" });
-    } else {
-        if (req.body.password == existe[0].usr_password) {
-            res.redirect('menu');
-        } else {
-            res.render('error', { mensaje: "Contraseña invalida" });
+controller.loginUser = async (req, res) => {
+    try {
+        let pool = await sql.connect(config);
+        console.log(req.body);
+        let row = await pool.query(`SELECT * FROM usr_User WHERE usr_username = '${req.body.usr_mail}'`);
+        if(row[recordset].usr_password == req.body.usr_password){
+            
+        }else{
+            res.json({result:"Contrasena invalida"})
         }
+
+    } catch (error) {
+        console.log(error.message);
+        res.json({result:error.message})
     }
-    //res.redirect('/');
 }
 
 module.exports = controller;

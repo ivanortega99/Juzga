@@ -14,12 +14,11 @@ controller.showUsers = (request, response) => {
 controller.loginUser = async (req, res) => {
     try {
         let pool = await sql.connect(config);
-        console.log(req.body);
         let row = await pool.query(`SELECT * FROM usr_User WHERE usr_username = '${req.body.usr_mail}'`);
-        if(row[recordset].usr_password == req.body.usr_password){
-            
+        if(row['recordset'][0].usr_password == req.body.usr_password){
+            res.json({result:200})
         }else{
-            res.json({result:"Contrasena invalida"})
+            res.json({result:500})
         }
 
     } catch (error) {

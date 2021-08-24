@@ -1,0 +1,219 @@
+use JuzgadoDB;
+  ---------------------------------------NUEVA CARPETA-------------------------------
+create table NuevaCarpeta(
+id_carpeta int (4) auto_increment,
+NUC_C varchar (30) not null,
+TIPO_C varchar (35) not null,
+PRESEN_C Varchar (35) not null,
+DELITO_C varchar (30) no null,
+FINGRESO_C date not null,
+FINICIO_C date not null,
+DURACION_C time not null,
+JUDIZI_C varchar (4),
+NUEVA_C varchar (4),
+A_MUERTO_C varchar (4),
+VINCULA_C varchar (4),
+PRIMARY KEY (id_carpeta)
+);
+
+
+CREATE TABLE Rol-Oficio(
+id_RO int (4) auto_increment,
+Oficio varchar (30),
+Rol int (12),
+PRIMARY KEY (id_Rol-Oficio)
+);
+
+CREATE TABLE Rela_RC(
+id_carpeta int,
+id_RO int,
+FOREIGN KEY (id_carpeta) REFERENCES NuevaCarpeta (id_carpeta) on delete cascade,
+FOREIGN KEY (id_RO) REFERENCES Rol-Oficio (id_domicilio) on delete cascade
+);
+
+-------------------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------MINUTAS-----------------------------------------------
+create table Minutas(
+id_minuta int (4) auto_increment,
+NUC_M varchar (30) not null,
+TIPO_M varchar (35) not null,
+PRESEN_M Varchar (35) not null,
+DELITO_M varchar (30) no null,
+FINGRESO_M date not null,
+FINICIO_M date not null,
+HINICIO_M time not null,
+HFIN_M time not null,
+DURACION_M time not null,
+MUNI_DELI varchar (20),
+RESOLUTIVOS LONGBLOB,
+OBSERVACIONES LONGBLOB,
+PRIMARY KEY (id_minuta)
+);
+
+
+CREATE TABLE Imputado(
+id_imputado int (4) auto_increment,
+imputado varchar (20),
+paterno varchar (20),
+materno varchar (20),
+edad int (4),
+muni_impu (20)
+PRIMARY KEY (id_imputado)
+);
+
+CREATE TABLE Victima(
+id_victima int (4) auto_increment,
+victima varchar (20),
+paterno_v varchar (20),
+materno_v varchar (20),
+edad_v int (4),
+muni-impu_v (20)
+PRIMARY KEY (id_victima)
+);
+
+CREATE TABLE Defensor(
+id_defensor int (4) auto_increment,
+defensa varchar (40)
+PRIMARY KEY (id_victima)
+);
+
+CREATE TABLE MP(
+id_mp int (4) auto_increment,
+mp varchar (40)
+PRIMARY KEY (id_mp)
+);
+
+CREATE TABLE Asesor(
+id_asesor int (4) auto_increment,
+asesor varchar (40)
+PRIMARY KEY (id_asesor)
+);
+
+CREATE TABLE Juez(
+id_juez int (4) auto_increment,
+juez varchar (40)
+PRIMARY KEY (id_juez)
+);
+
+CREATE TABLE Encargado(
+id_encargado int (4) auto_increment,
+encargado varchar (40)
+PRIMARY KEY (id_encargado)
+);
+
+CREATE TABLE AuxSala(
+id_aux int (4) auto_increment,
+auxiliar varchar (40)
+PRIMARY KEY (id_aux)
+);
+
+CREATE TABLE Sala(
+id_sala int (4) auto_increment,
+sala varchar (20)
+PRIMARY KEY (id_sala)
+);
+
+
+
+CREATE TABLE Rela_MT(
+id_minuta int,
+id_imputado int,
+id_victima int,
+id_defensor int,
+id_mp int,
+id_asesor int,
+id_juez int,
+id_encargado int,
+id_aux int,
+id_sala int,
+FOREIGN KEY (id_minuta) REFERENCES Minutas (id_minuta) on delete cascade,
+FOREIGN KEY (id_imputado) REFERENCES Imputado (id_imputado) on delete cascade,
+FOREIGN KEY (id_victima) REFERENCES Victima (id_victima) on delete cascade,
+FOREIGN KEY (id_defensor) REFERENCES Defensor (id_defensor) on delete cascade,
+FOREIGN KEY (id_mp) REFERENCES MP (id_mp) on delete cascade,
+FOREIGN KEY (id_asesor) REFERENCES Asesor (id_asesor) on delete cascade,
+FOREIGN KEY (id_juez) REFERENCES Juez (id_juez) on delete cascade,
+FOREIGN KEY (id_encargado) REFERENCES Encargado (id_encargado) on delete cascade,
+FOREIGN KEY (id_aux) REFERENCES AuxSala (id_aux) on delete cascade,
+FOREIGN KEY (id_sala) REFERENCES Sala (id_sala) on delete cascade
+);
+
+----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------NOTIFICACIONES--------------------------------------------------------------
+create table Notificacion (
+id_notificacion int (4) auto_increment,
+NUC_N varchar (30) not null,
+NOTIFICADOR varchar (40) not null,
+ACUERDO varchar (40) not null,
+JUEZ varchar (40) not null,
+FECHA date not null,
+HORA time not null,
+DESCRIPCION LONGBLOB,
+PDF (),
+PRIMARY KEY (id_notificacion)
+);
+
+---------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------USUARIOS----------------------------------------------------------------
+create table Cuenta(
+id_cuenta int (4) auto_increment,
+name varchar (30) not null,
+lastname varchar (35) not null,
+username Varchar (35) not null,
+password varchar (30) no null
+PRIMARY KEY (id_cuenta)
+);
+
+create table Tipo(
+id_tipo int (4) auto_increment,
+tipo varchar (30) not null
+PRIMARY KEY (id_tipo)
+);
+
+CREATE TABLE Rela_CT(
+id_cuenta int,
+id_tipo int,
+FOREIGN KEY (id_cuenta) REFERENCES Cuenta (id_cuenta) on delete cascade,
+FOREIGN KEY (id_tipo) REFERENCES Tipo (id_tipo) on delete cascade
+);
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------PARTES----------------------------------------------------------------------------
+create table Partes(
+id_partes int (4) auto_increment,
+parte varchar (30) not null,
+tipo varchar (30) not null
+PRIMARY KEY (id_partes)
+);
+
+create table CorreoP(
+id_correo int (4) auto_increment,
+correo varchar (30) not null
+PRIMARY KEY (id_correo)
+);
+
+create table TelefonoP(
+id_telefono int (4) auto_increment,
+telefono varchar (30) not null
+PRIMARY KEY (id_telefono)
+);
+
+CREATE TABLE Rela_PCT(
+id_partes int,
+id_correo int,
+id_telefono int,
+FOREIGN KEY (id_partes) REFERENCES Partes (id_partes) on delete cascade,
+FOREIGN KEY (id_correo) REFERENCES CorreoP (id_correo) on delete cascade,
+FOREIGN KEY (id_telefono) REFERENCES TelefonoP (id_telefono) on delete cascade
+);
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------TABLA PDF---------------------------------------------------------------------------
+
+create table CDigital(
+id_digital int (4) auto_increment,
+pdf varbinary(max) not null
+PRIMARY KEY (id_telefono)
+);

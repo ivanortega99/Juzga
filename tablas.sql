@@ -15,7 +15,7 @@ CREATE TABLE Usuario (
 	apellidos VARCHAR(100),
 	email VARCHAR(100),
 	nombre_usuario VARCHAR(100),
-	constrasena VARCHAR(100),
+	contrasena VARCHAR(100),
 
 	PRIMARY KEY (id_usuario),
 	FOREIGN KEY (id_tipo_usuario) REFERENCES TipoUsuario(id_tipo_usuario) ON UPDATE CASCADE ON DELETE CASCADE
@@ -308,5 +308,4 @@ INSERT INTO TipoUsuario (tipo) VALUES ('Administrador');
 INSERT INTO TipoUsuario (tipo) VALUES ('Editor');
 INSERT INTO TipoUsuario (tipo) VALUES ('Notificador');
 
-INSERT INTO Usuario (id_tipo_usuario, nombre, apellidos, email, nombre_usuario, constrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
-
+INSERT INTO Usuario (id_tipo_usuario, nombre, apellidos, email, nombre_usuario, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');

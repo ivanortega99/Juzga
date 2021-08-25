@@ -308,4 +308,27 @@ INSERT INTO TipoUsuario (tipo) VALUES ('Administrador');
 INSERT INTO TipoUsuario (tipo) VALUES ('Editor');
 INSERT INTO TipoUsuario (tipo) VALUES ('Notificador');
 
-INSERT INTO Usuario (id_tipo_usuario, nombre, apellidos, email, nombre_usuario, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
+-- INSERT INTO Usuario (id_tipo_usuario, nombre, apellidos, email, nombre_usuario, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
+
+INSERT INTO Delito (delito) VALUES ('Robo');
+INSERT INTO Delito (delito) VALUES ('Asesinato');
+INSERT INTO Delito (delito) VALUES ('Roba a mano armada');
+INSERT INTO Delito (delito) VALUES ('Robo1');
+INSERT INTO Delito (delito) VALUES ('Robo2');
+INSERT INTO Delito (delito) VALUES ('Robo3');
+
+INSERT INTO Carpeta (nuc, tipo, presentacion, fecha_ingreso, fecha_inicio, duracion, judicalizada, nuevo, archivo_muerto, vinculacion, rol, oficio) VALUES ('123', '123', '123', now(), now(), '123', 0, 0, 1, 1, '123', '123');
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 2);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 3);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 4);
+INSERT INTO Carpeta (nuc, tipo, presentacion, fecha_ingreso, fecha_inicio, duracion, judicalizada, nuevo, archivo_muerto, vinculacion, rol, oficio) VALUES ('456', '456', '456', now(), now(), '456', 0, 0, 1, 1, '456', '456');
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 5);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
+
+-- Obtener todas las carpetas
+SELECT * FROM Carpeta;
+
+SELECT * 
+FROM Carpeta INNER JOIN CarpetaDelito INNER JOIN Delito
+ON Carpeta.id_carpeta = CarpetaDelito.id_carpeta
+AND CarpetaDelito.id_delito = Delito.id_delito;

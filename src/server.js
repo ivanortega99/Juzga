@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
-const cors = require('cors')
+const cors = require('cors');
+
 const loginRouter = require('./routes/login/login.route');
 const usuariosRouter = require('./routes/usuarios/usuarios.route');
+const carpetaRouter = require('./routes/carpeta/carpeta.route');
 
 const app = express();
 app.set('port', process.env.PORT || 3005);
@@ -35,9 +37,9 @@ app.use(function (req, res, next) {
 	next();
 });
 
-
 app.use('/api/login', loginRouter);
 app.use('/api/usuarios', usuariosRouter);
+app.use('/api/carpeta', carpetaRouter);
 
 app.listen(app.get('port'), () => {
     console.log('Server on port -> ', app.get('port'));

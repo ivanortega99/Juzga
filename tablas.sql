@@ -11,10 +11,10 @@ CREATE TABLE TipoUsuario (
 CREATE TABLE Usuario (
   	id_usuario INT NOT NULL AUTO_INCREMENT,
 	id_tipo_usuario INT NOT NULL,
-    nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+    nombre_usuario VARCHAR(100),
+	apellidos_usuario VARCHAR(100),
 	email VARCHAR(100),
-	nombre_usuario VARCHAR(100),
+	username VARCHAR(100),
 	contrasena VARCHAR(100),
 
 	PRIMARY KEY (id_usuario),
@@ -38,8 +38,8 @@ CREATE TABLE Delito (
 CREATE TABLE Imputado (
 	id_imputado INT NOT NULL AUTO_INCREMENT,
 	id_municipio INT NOT NULL,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_imputado VARCHAR(100),
+	apellidos_imputado VARCHAR(100),
 	edad VARCHAR(100),
 
 	PRIMARY KEY (id_imputado),
@@ -48,8 +48,8 @@ CREATE TABLE Imputado (
 
 CREATE TABLE Victima (
 	id_victima INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_victima VARCHAR(100),
+	apellidos_victima VARCHAR(100),
 	edad VARCHAR(100),
 
 	PRIMARY KEY (id_victima)
@@ -57,23 +57,23 @@ CREATE TABLE Victima (
 
 CREATE TABLE MinisterioPublico (
 	id_ministerio INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
+	nombre_ministerio VARCHAR(100),
 
 	PRIMARY KEY (id_ministerio)
 );
 
 CREATE TABLE Juez (
 	id_juez INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_juez VARCHAR(100),
+	apellidos_juez VARCHAR(100),
 
 	PRIMARY KEY (id_juez)
 );
 
 CREATE TABLE Notificador (
 	id_notificador INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_notificador VARCHAR(100),
+	apellidos_notificador VARCHAR(100),
 
 	PRIMARY KEY (id_notificador)
 );
@@ -93,16 +93,16 @@ CREATE TABLE Notificaciones (
 
 CREATE TABLE AuxiliarSala (
 	id_auxiliar INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_auxiliar VARCHAR(100),
+	apellidos_auxiliar VARCHAR(100),
 
 	PRIMARY KEY (id_auxiliar)
 );
 
 CREATE TABLE EncargadoSala (
 	id_encargado INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(100),
-	apellidos VARCHAR(100),
+	nombre_encargado VARCHAR(100),
+	apellidos_encargado VARCHAR(100),
 
 	PRIMARY KEY (id_encargado)
 );
@@ -112,7 +112,7 @@ CREATE TABLE Sala (
 	id_encargado INT NOT NULL,
 	id_auxiliar INT NOT NULL,
 	id_juez INT NOT NULL,
-	nombre VARCHAR(100),
+	nombre_sala VARCHAR(100),
 
 	PRIMARY KEY (id_sala),
 	FOREIGN KEY (id_encargado) REFERENCES EncargadoSala(id_encargado) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -308,7 +308,7 @@ INSERT INTO TipoUsuario (tipo) VALUES ('Administrador');
 INSERT INTO TipoUsuario (tipo) VALUES ('Editor');
 INSERT INTO TipoUsuario (tipo) VALUES ('Notificador');
 
--- INSERT INTO Usuario (id_tipo_usuario, nombre, apellidos, email, nombre_usuario, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
+-- INSERT INTO Usuario (id_tipo_usuario, nombre_usuario, apellidos_usuario, email, nombre_usuario, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
 
 INSERT INTO Delito (delito) VALUES ('Robo');
 INSERT INTO Delito (delito) VALUES ('Asesinato');
@@ -325,6 +325,46 @@ INSERT INTO Carpeta (nuc, tipo, presentacion, fecha_ingreso, fecha_inicio, durac
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 5);
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
 
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Luis', 'Ceja Luna');
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Carlos', 'Solano Vega');
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Lupita', 'García Ortega');
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Angell', 'Ayala Aquino');
+
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Luis', 'Ceja Luna');
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Carlos', 'Solano Vega');
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Lupita', 'García Ortega');
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Angell', 'Ayala Aquino');
+
+INSERT INTO Notificaciones (id_juez, nuc, acuerdo, fecha, descripcion, archivo) VALUES (1, '123', 'acuerdo', now(), '123', '123');
+
+INSERT INTO NotificadorNotificaciones (id_notificacion, id_notificador) VALUES (1, 1);
+INSERT INTO NotificadorNotificaciones (id_notificacion, id_notificador) VALUES (2, 1);
+
+-- ALTER TABLE Usuario CHANGE nombre nombre_usuario VARCHAR(100);
+-- ALTER TABLE Usuario CHANGE apellidos apellidos_usuario VARCHAR(100);
+
+-- ALTER TABLE Imputado CHANGE nombre nombre_imputado VARCHAR(100);
+-- ALTER TABLE Imputado CHANGE apellidos apellidos_imputado VARCHAR(100);
+
+-- ALTER TABLE Victima CHANGE nombre nombre_victima VARCHAR(100);
+-- ALTER TABLE Victima CHANGE apellidos apellidos_victima VARCHAR(100);
+
+-- ALTER TABLE MinisterioPublico CHANGE nombre nombre_ministerio VARCHAR(100);
+
+-- ALTER TABLE Juez CHANGE nombre nombre_juez VARCHAR(100);
+-- ALTER TABLE Juez CHANGE apellidos apellidos_juez VARCHAR(100);
+
+-- ALTER TABLE Notificador CHANGE nombre nombre_notificador VARCHAR(100);
+-- ALTER TABLE Notificador CHANGE apellidos apellidos_notificador VARCHAR(100);
+
+-- ALTER TABLE AuxiliarSala CHANGE nombre nombre_auxiliar VARCHAR(100);
+-- ALTER TABLE AuxiliarSala CHANGE apellidos apellidos_auxiliar VARCHAR(100);
+
+-- ALTER TABLE EncargadoSala CHANGE nombre nombre_encargado VARCHAR(100);
+-- ALTER TABLE EncargadoSala CHANGE apellidos apellidos_encargado VARCHAR(100);
+
+-- ALTER TABLE Parte CHANGE nombre nombre_parte VARCHAR(100);
+
 -- Obtener todas las carpetas
 SELECT * FROM Carpeta;
 
@@ -332,3 +372,10 @@ SELECT *
 FROM Carpeta INNER JOIN CarpetaDelito INNER JOIN Delito
 ON Carpeta.id_carpeta = CarpetaDelito.id_carpeta
 AND CarpetaDelito.id_delito = Delito.id_delito;
+
+SELECT Notificaciones.id_notificacion, Notificador.id_notificador, Juez.id_juez, nombre_juez, apellidos_juez, nombre_notificador, apellidos_notificador, nuc, fecha, acuerdo, descripcion, archivo
+FROM Notificaciones INNER JOIN Juez INNER JOIN Notificador INNER JOIN NotificadorNotificaciones
+ON Notificaciones.id_juez = Juez.id_juez
+AND Notificaciones.id_notificacion = NotificadorNotificaciones.id_notificacion
+AND NotificadorNotificaciones.id_notificador = Notificador.id_notificador
+WHERE Notificaciones.id_notificacion = 1;

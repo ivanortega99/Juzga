@@ -3,7 +3,7 @@ const db = require('../../config/db');
 // Obtener todos los usuarios
 exports.getUsers = async () => {
     try {
-        let usuarios = await db.query("SELECT id_usuario, nombre_usuario, apellidos_usuario, email, username, tipo FROM Usuario INNER JOIN TipoUsuario ON TipoUsuario.id_tipo_usuario = Usuario.id_tipo_usuario");
+        let usuarios = await db.query("SELECT id_usuario, nombre_usuario, apellidos_usuario, email, username, tipo_usuario FROM Usuario INNER JOIN TipoUsuario ON TipoUsuario.id_tipo_usuario = Usuario.id_tipo_usuario");
 
         return {
             message: "Usuarios obtenidos!",

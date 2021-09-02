@@ -6,6 +6,8 @@ const loginRouter = require('./routes/login/login.route');
 const usuariosRouter = require('./routes/usuarios/usuarios.route');
 const carpetaRouter = require('./routes/carpeta/carpeta.route');
 const notificacionesRouter = require('./routes/notificaciones/notificaciones.route');
+const minutaRouter = require('./routes/minuta/minuta.route');
+const partesRouter = require('./routes/partes/partes.route');
 
 const app = express();
 app.set('port', process.env.PORT || 3005);
@@ -42,6 +44,8 @@ app.use('/api/login', loginRouter);
 app.use('/api/usuarios', usuariosRouter);
 app.use('/api/carpeta', carpetaRouter);
 app.use('/api/notificacion', notificacionesRouter);
+app.use('/api/minuta', minutaRouter);
+app.use('/api/partes', partesRouter);
 
 app.listen(app.get('port'), () => {
     console.log('Server on port -> ', app.get('port'));

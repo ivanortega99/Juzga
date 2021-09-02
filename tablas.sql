@@ -18,7 +18,7 @@ CREATE TABLE Usuario (
 	contrasena VARCHAR(100),
 
 	PRIMARY KEY (id_usuario),
-	FOREIGN KEY (id_tipo_usuario) REFERENCES TipoUsuario(id_tipo_usuario) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_tipo_usuario) REFERENCES TipoUsuario(id_tipo_usuario)
 );
 
 CREATE TABLE Municipio (
@@ -43,7 +43,7 @@ CREATE TABLE Imputado (
 	edad VARCHAR(100),
 
 	PRIMARY KEY (id_imputado),
-	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
 );
 
 CREATE TABLE Victima (
@@ -53,13 +53,6 @@ CREATE TABLE Victima (
 	edad VARCHAR(100),
 
 	PRIMARY KEY (id_victima)
-);
-
-CREATE TABLE MinisterioPublico (
-	id_ministerio INT NOT NULL AUTO_INCREMENT,
-	nombre_ministerio VARCHAR(100),
-
-	PRIMARY KEY (id_ministerio)
 );
 
 CREATE TABLE Juez (
@@ -78,9 +71,10 @@ CREATE TABLE Notificador (
 	PRIMARY KEY (id_notificador)
 );
 
-CREATE TABLE Notificaciones (
+CREATE TABLE Notificacion (
 	id_notificacion INT NOT NULL AUTO_INCREMENT,
 	id_juez INT NOT NULL,
+	id_notificador INT NOT NULL,
 	nuc_notificacion VARCHAR(100),
 	acuerdo VARCHAR(100),
 	fecha DATE,
@@ -88,7 +82,8 @@ CREATE TABLE Notificaciones (
 	archivo VARCHAR(100),
 
 	PRIMARY KEY (id_notificacion),
-	FOREIGN KEY (id_juez) REFERENCES Juez(id_juez) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_juez) REFERENCES Juez(id_juez),
+	FOREIGN KEY (id_notificador) REFERENCES Notificador(id_notificador)
 );
 
 CREATE TABLE AuxiliarSala (
@@ -122,10 +117,10 @@ CREATE TABLE RegistroSala (
 	id_juez INT NOT NULL,
 
 	PRIMARY KEY (id_registro_sala),
-	FOREIGN KEY (id_sala) REFERENCES Sala(id_sala) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_encargado) REFERENCES EncargadoSala(id_encargado) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_auxiliar) REFERENCES AuxiliarSala(id_auxiliar) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_juez) REFERENCES Juez(id_juez) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_sala) REFERENCES Sala(id_sala),
+	FOREIGN KEY (id_encargado) REFERENCES EncargadoSala(id_encargado),
+	FOREIGN KEY (id_auxiliar) REFERENCES AuxiliarSala(id_auxiliar),
+	FOREIGN KEY (id_juez) REFERENCES Juez(id_juez)
 );
 
 CREATE TABLE TipoParte (
@@ -141,7 +136,7 @@ CREATE TABLE Parte (
 	nombre_parte VARCHAR(100),
 
 	PRIMARY KEY (id_parte),
-	FOREIGN KEY (id_tipo_parte) REFERENCES TipoParte(id_tipo_parte) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_tipo_parte) REFERENCES TipoParte(id_tipo_parte)
 );
 
 CREATE TABLE CorreoP (
@@ -169,39 +164,39 @@ CREATE TABLE Carpeta (
 	id_carpeta INT NOT NULL AUTO_INCREMENT,
 	nuc_carpeta VARCHAR(100),
 	tipo_carpeta VARCHAR(100),
-	presentacion VARCHAR(100),
-	fecha_ingreso DATE,
-	fecha_inicio DATE,
-	duracion VARCHAR(100),
-	judicalizada BOOLEAN,
-	nuevo BOOLEAN,
-	archivo_muerto BOOLEAN,
-	vinculacion BOOLEAN,
-	rol VARCHAR(100),
-	oficio VARCHAR(100),
+	presentacion_carpeta VARCHAR(100),
+	fecha_ingreso_carpeta DATE,
+	fecha_inicio_carpeta DATE,
+	duracion_carpeta VARCHAR(100),
+	judicalizada_carpeta BOOLEAN,
+	nuevo_carpeta BOOLEAN,
+	archivo_muerto_carpeta BOOLEAN,
+	vinculacion_carpeta BOOLEAN,
+	rol_carpeta VARCHAR(100),
+	oficio_carpeta VARCHAR(100),
 
 	PRIMARY KEY (id_carpeta)
 );
 
 CREATE TABLE Minuta (
 	id_minuta INT NOT NULL AUTO_INCREMENT,
-	-- id_delito INT NOT NULL,
 	id_municipio INT NOT NULL,
 	id_registro_sala INT NOT NULL,
-	fecha_sala date,
+	id_parte INT NOT NULL,
 	nuc_minuta VARCHAR(100),
-	presentacion VARCHAR(100),
-	fecha_ingreso DATE,
-	hora_inicio DATE,
-	hora_final DATE,
-	duracion VARCHAR(100),
-	resolutivos VARCHAR(100),
-	observaciones VARCHAR(100),
+	presentacion_minuta VARCHAR(100),
+	fecha_ingreso_minuta DATE,
+	fecha_inicio_minuta DATE,
+	hora_inicio_minuta DATE,
+	hora_final_minuta DATE,
+	duracion_minuta VARCHAR(100),
+	resolutivos_minuta VARCHAR(100),
+	observaciones_minuta VARCHAR(100),
 
 	PRIMARY KEY (id_minuta),
-	-- FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_registro_sala) REFERENCES RegistroSala(id_registro_sala) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio),
+	FOREIGN KEY (id_registro_sala) REFERENCES RegistroSala(id_registro_sala),
+	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte)
 );
 
 -- Relacion
@@ -209,8 +204,8 @@ CREATE TABLE ImputadoDelito (
 	id_imputado INT NOT NULL,
 	id_delito INT NOT NULL,
 
-	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_delito) REFERENCES Delito(id_delito) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado),
+	FOREIGN KEY (id_delito) REFERENCES Delito(id_delito)
 );
 
 -- Relacion
@@ -218,8 +213,8 @@ CREATE TABLE MinutaImputado (
 	id_minuta INT NOT NULL,
 	id_imputado INT NOT NULL,
 
-	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta),
+	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado)
 );
 
 -- Relacion
@@ -227,26 +222,8 @@ CREATE TABLE MinutaVictima (
 	id_minuta INT NOT NULL,
 	id_victima INT NOT NULL,
 
-	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_victima) REFERENCES Victima(id_victima) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Relacion
-CREATE TABLE MinutaMinisterioPublico (
-	id_minuta INT NOT NULL,
-	id_ministerio INT NOT NULL,
-
-	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_ministerio) REFERENCES MinisterioPublico(id_ministerio) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
--- Relacion
-CREATE TABLE NotificadorNotificaciones (
-	id_notificacion INT NOT NULL,
-	id_notificador INT NOT NULL,
-
-	FOREIGN KEY (id_notificacion) REFERENCES Notificaciones(id_notificacion) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_notificador) REFERENCES Notificador(id_notificador) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta),
+	FOREIGN KEY (id_victima) REFERENCES Victima(id_victima)
 );
 
 -- Relacion
@@ -254,8 +231,8 @@ CREATE TABLE ParteCorreoP (
 	id_parte INT NOT NULL,
 	id_correo INT NOT NULL,
 
-	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_correo) REFERENCES CorreoP(id_correo) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte),
+	FOREIGN KEY (id_correo) REFERENCES CorreoP(id_correo)
 );
 
 -- Relacion
@@ -263,8 +240,8 @@ CREATE TABLE ParteTelefonoP (
 	id_parte INT NOT NULL,
 	id_telefono INT NOT NULL,
 
-	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_telefono) REFERENCES TelefonoP(id_telefono) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte),
+	FOREIGN KEY (id_telefono) REFERENCES TelefonoP(id_telefono)
 );
 
 -- Relacion
@@ -272,8 +249,8 @@ CREATE TABLE VictimaParte (
 	id_parte INT NOT NULL,
 	id_victima INT NOT NULL,
 
-	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_victima) REFERENCES Victima(id_victima) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte),
+	FOREIGN KEY (id_victima) REFERENCES Victima(id_victima)
 );
 
 -- Relacion
@@ -281,8 +258,8 @@ CREATE TABLE ImputadoParte (
 	id_parte INT NOT NULL,
 	id_imputado INT NOT NULL,
 
-	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte),
+	FOREIGN KEY (id_imputado) REFERENCES Imputado(id_imputado)
 );
 
 -- Relacion
@@ -290,8 +267,8 @@ CREATE TABLE MinutaTipoAudiencia (
 	id_minuta INT NOT NULL,
 	id_tipo_audiencia INT NOT NULL,
 
-	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_tipo_audiencia) REFERENCES TipoAudiencia(id_tipo_audiencia) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_minuta) REFERENCES Minuta(id_minuta),
+	FOREIGN KEY (id_tipo_audiencia) REFERENCES TipoAudiencia(id_tipo_audiencia)
 );
 
 -- Relacion
@@ -299,8 +276,8 @@ CREATE TABLE CarpetaDelito (
 	id_carpeta INT NOT NULL,
 	id_delito INT NOT NULL,
 
-	FOREIGN KEY (id_carpeta) REFERENCES Carpeta(id_carpeta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_delito) REFERENCES Delito(id_delito) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_carpeta) REFERENCES Carpeta(id_carpeta),
+	FOREIGN KEY (id_delito) REFERENCES Delito(id_delito)
 );
 
 -- Relacion
@@ -308,8 +285,8 @@ CREATE TABLE CarpetaTipoAudiencia (
 	id_carpeta INT NOT NULL,
 	id_tipo_audiencia INT NOT NULL,
 
-	FOREIGN KEY (id_carpeta) REFERENCES Carpeta(id_carpeta) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY (id_tipo_audiencia) REFERENCES TipoAudiencia(id_tipo_audiencia) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY (id_carpeta) REFERENCES Carpeta(id_carpeta),
+	FOREIGN KEY (id_tipo_audiencia) REFERENCES TipoAudiencia(id_tipo_audiencia)
 );
 
 INSERT INTO TipoUsuario (tipo_usuario) VALUES ('Administrador');
@@ -318,6 +295,17 @@ INSERT INTO TipoUsuario (tipo_usuario) VALUES ('Notificador');
 
 INSERT INTO TipoParte (tipo_parte) VALUES ('Defensor');
 INSERT INTO TipoParte (tipo_parte) VALUES ('Asesor juridico');
+INSERT INTO TipoParte (tipo_parte) VALUES ('Ministerio publico');
+
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor1');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor2');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor3');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor1');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor2');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor3');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio1');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio2');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio3');
 
 INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Luis', ' Ceja Luna');
 INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Carlos', 'Solano Vega');
@@ -329,7 +317,7 @@ INSERT INTO Sala (nombre_sala) VALUES ('Sala2');
 INSERT INTO Sala (nombre_sala) VALUES ('Zoom');
 INSERT INTO Sala (nombre_sala) VALUES ('Telmex');
 
-INSERT INTO Usuario (id_tipo_usuario, nombre_usuario, apellidos_usuario, email, username, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '123456');
+INSERT INTO Usuario (id_tipo_usuario, nombre_usuario, apellidos_usuario, email, username, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '$2a$10$.is35Ed4xnPkhy52rvD6D.kg9te2Q1MvH992aNMIdgqQdcHwyBQaW');
 
 INSERT INTO Delito (delito) VALUES ('Robo');
 INSERT INTO Delito (delito) VALUES ('Asesinato');
@@ -338,11 +326,11 @@ INSERT INTO Delito (delito) VALUES ('Robo1');
 INSERT INTO Delito (delito) VALUES ('Robo2');
 INSERT INTO Delito (delito) VALUES ('Robo3');
 
-INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion, fecha_ingreso, fecha_inicio, duracion, judicalizada, nuevo, archivo_muerto, vinculacion, rol, oficio) VALUES ('123', '123', '123', now(), now(), '123', 0, 0, 1, 1, '123', '123');
+INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('123', '123', '123', now(), now(), '123', 0, 0, 1, 1, '123', '123');
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 2);
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 3);
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 4);
-INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion, fecha_ingreso, fecha_inicio, duracion, judicalizada, nuevo, archivo_muerto, vinculacion, rol, oficio) VALUES ('456', '456', '456', now(), now(), '456', 0, 0, 1, 1, '456', '456');
+INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('456', '456', '456', now(), now(), '456', 0, 0, 1, 1, '456', '456');
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 5);
 INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
 
@@ -356,11 +344,13 @@ INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Car
 INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Lupita', 'García Ortega');
 INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Angell', 'Ayala Aquino');
 
-INSERT INTO Notificaciones (id_juez, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, '123', 'acuerdo', now(), '123', '123');
-INSERT INTO Notificaciones (id_juez, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, '456', 'acuerdo', now(), '456', '456');
+INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, 2, '123', 'acuerdo', now(), '123', '123');
+INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (2, 1, '456', 'acuerdo', now(), '456', '456');
 
-INSERT INTO NotificadorNotificaciones (id_notificacion, id_notificador) VALUES (1, 1);
-INSERT INTO NotificadorNotificaciones (id_notificacion, id_notificador) VALUES (2, 1);
+INSERT INTO RegistroSala (id_sala, id_encargado, id_auxiliar, id_juez) VALUES (4, 1, 2, 3);
+
+INSERT INTO Minuta (id_municipio, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta)
+VALUES (124, 1, 7, '123', '123', now(), now(), now(), now(), '123', '123', '123');
 
 INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 ('Acatlán de Juárez'),
@@ -524,18 +514,3 @@ INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 -- ALTER TABLE Notificaciones CHANGE nuc nuc_notificacion VARCHAR(100);
 -- ALTER TABLE Carpeta CHANGE nuc nuc_carpeta VARCHAR(100);
 -- ALTER TABLE Minuta CHANGE nuc nuc_minuta VARCHAR(100);
-
--- Obtener todas las carpetas
-SELECT * FROM Carpeta;
-
-SELECT * 
-FROM Carpeta INNER JOIN CarpetaDelito INNER JOIN Delito
-ON Carpeta.id_carpeta = CarpetaDelito.id_carpeta
-AND CarpetaDelito.id_delito = Delito.id_delito;
-
-SELECT Notificaciones.id_notificacion, Notificador.id_notificador, Juez.id_juez, nombre_juez, apellidos_juez, nombre_notificador, apellidos_notificador, nuc_notificacion, fecha, acuerdo, descripcion, archivo
-FROM Notificaciones INNER JOIN Juez INNER JOIN Notificador INNER JOIN NotificadorNotificaciones
-ON Notificaciones.id_juez = Juez.id_juez
-AND Notificaciones.id_notificacion = NotificadorNotificaciones.id_notificacion
-AND NotificadorNotificaciones.id_notificador = Notificador.id_notificador
-WHERE Notificaciones.id_notificacion = 1;

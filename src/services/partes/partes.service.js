@@ -21,3 +21,14 @@ exports.getParte = async (id_parte) => {
         console.log(err);
     }
 }
+
+// Agregar una parte
+exports.createParte = async (dataParte) => {
+    try {
+        let daoResponse = await partesDao.createParte(dataParte);
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+    }
+}

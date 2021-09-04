@@ -28,3 +28,18 @@ exports.getParte = async (req, res) => {
         console.log(err);
     }
 }
+
+// Crear una parte
+exports.createParte = async (req, res) => {
+    try {
+        let dataParte = req.body;
+        let serviceResponse = await partesService.createParte(dataParte);
+
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

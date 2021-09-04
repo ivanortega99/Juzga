@@ -21,10 +21,10 @@ exports.createMinuta = async (req, res) => {
 
         let serviceResponse = await serviceMinuta.createMinuta(dataMinuta);
 
-        // res.status(serviceResponse.code).json({
-        //     message: serviceResponse.message,
-        //     payload: serviceResponse.payload
-        // });
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
     } catch (err) {
         console.log(err);
     }

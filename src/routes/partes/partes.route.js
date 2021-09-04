@@ -9,4 +9,7 @@ router.get('/', partesController.getPartes);
 // Obtener una parte
 router.get('/:id', partesController.getParte);
 
+// Crear una parte
+router.post('/', partesController.createParte);
+
 module.exports = router;

@@ -40,7 +40,7 @@ CREATE TABLE Imputado (
 	id_municipio INT NOT NULL,
 	nombre_imputado VARCHAR(100),
 	apellidos_imputado VARCHAR(100),
-	edad VARCHAR(100),
+	edad_imputado VARCHAR(100),
 
 	PRIMARY KEY (id_imputado),
 	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
@@ -48,11 +48,13 @@ CREATE TABLE Imputado (
 
 CREATE TABLE Victima (
 	id_victima INT NOT NULL AUTO_INCREMENT,
+	id_municipio INT NOT NULL,
 	nombre_victima VARCHAR(100),
 	apellidos_victima VARCHAR(100),
-	edad VARCHAR(100),
+	edad_victima VARCHAR(100),
 
-	PRIMARY KEY (id_victima)
+	PRIMARY KEY (id_victima),
+	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio)
 );
 
 CREATE TABLE Juez (
@@ -180,7 +182,7 @@ CREATE TABLE Carpeta (
 
 CREATE TABLE Minuta (
 	id_minuta INT NOT NULL AUTO_INCREMENT,
-	id_municipio INT NOT NULL,
+	id_municipio_delito INT NOT NULL,
 	id_registro_sala INT NOT NULL,
 	id_parte INT NOT NULL,
 	nuc_minuta VARCHAR(100),
@@ -192,9 +194,10 @@ CREATE TABLE Minuta (
 	duracion_minuta VARCHAR(100),
 	resolutivos_minuta VARCHAR(100),
 	observaciones_minuta VARCHAR(100),
+	desahogo_audiencia BOOLEAN,
 
 	PRIMARY KEY (id_minuta),
-	FOREIGN KEY (id_municipio) REFERENCES Municipio(id_municipio),
+	FOREIGN KEY (id_municipio_delito) REFERENCES Municipio(id_municipio),
 	FOREIGN KEY (id_registro_sala) REFERENCES RegistroSala(id_registro_sala),
 	FOREIGN KEY (id_parte) REFERENCES Parte(id_parte)
 );
@@ -306,6 +309,63 @@ INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor3');
 INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio1');
 INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio2');
 INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio3');
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (?, ?);
+
+INSERT INTO CorreoP (correo) VALUES ('def1@email.com');
+INSERT INTO CorreoP (correo) VALUES ('def2@email.com');
+INSERT INTO CorreoP (correo) VALUES ('def3@email.com');
+INSERT INTO CorreoP (correo) VALUES ('ase1@email.com');
+INSERT INTO CorreoP (correo) VALUES ('ase2@email.com');
+INSERT INTO CorreoP (correo) VALUES ('ase3@email.com');
+INSERT INTO CorreoP (correo) VALUES ('min1@email.com');
+INSERT INTO CorreoP (correo) VALUES ('min2@email.com');
+INSERT INTO CorreoP (correo) VALUES ('min3@email.com');
+INSERT INTO CorreoP (correo) VALUES ('def4@email.com');
+INSERT INTO CorreoP (correo) VALUES ('ase4@email.com');
+INSERT INTO CorreoP (correo) VALUES ('min4@email.com');
+INSERT INTO CorreoP (correo) VALUES (?);
+
+INSERT INTO TelefonoP (telefono) VALUES ('123');
+INSERT INTO TelefonoP (telefono) VALUES ('123');
+INSERT INTO TelefonoP (telefono) VALUES ('123');
+INSERT INTO TelefonoP (telefono) VALUES ('456');
+INSERT INTO TelefonoP (telefono) VALUES ('456');
+INSERT INTO TelefonoP (telefono) VALUES ('456');
+INSERT INTO TelefonoP (telefono) VALUES ('789');
+INSERT INTO TelefonoP (telefono) VALUES ('789');
+INSERT INTO TelefonoP (telefono) VALUES ('789');
+INSERT INTO TelefonoP (telefono) VALUES ('123');
+INSERT INTO TelefonoP (telefono) VALUES ('456');
+INSERT INTO TelefonoP (telefono) VALUES ('789');
+INSERT INTO TelefonoP (telefono) VALUES (?);
+
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (1, 1);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (2, 2);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (3, 3);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (4, 4);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (5, 5);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (6, 6);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (7, 7);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (8, 8);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (9, 9);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (1, 10);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (2, 11);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (3, 12);
+INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (?, ?);
+
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (1, 1);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (2, 2);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (3, 3);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (4, 4);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (5, 5);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (6, 6);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (7, 7);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (8, 8);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (9, 9);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (1, 10);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (2, 11);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (3, 12);
+INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (?, ?);
 
 INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Luis', ' Ceja Luna');
 INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Carlos', 'Solano Vega');
@@ -346,11 +406,6 @@ INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Ang
 
 INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, 2, '123', 'acuerdo', now(), '123', '123');
 INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (2, 1, '456', 'acuerdo', now(), '456', '456');
-
-INSERT INTO RegistroSala (id_sala, id_encargado, id_auxiliar, id_juez) VALUES (4, 1, 2, 3);
-
-INSERT INTO Minuta (id_municipio, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta)
-VALUES (124, 1, 7, '123', '123', now(), now(), now(), now(), '123', '123', '123');
 
 INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 ('Acatlán de Juárez'),
@@ -514,3 +569,44 @@ INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 -- ALTER TABLE Notificaciones CHANGE nuc nuc_notificacion VARCHAR(100);
 -- ALTER TABLE Carpeta CHANGE nuc nuc_carpeta VARCHAR(100);
 -- ALTER TABLE Minuta CHANGE nuc nuc_minuta VARCHAR(100);
+
+-- Datos necesarios para crear una minuta (ministerio publico, defensores, asesores, jueces, salas, encargados, auxiliares, delitos)
+SELECT id_parte, nombre_parte FROM Parte WHERE id_tipo_parte = 3;
+SELECT id_parte, nombre_parte FROM Parte WHERE id_tipo_parte = 1;
+SELECT id_parte, nombre_parte FROM Parte WHERE id_tipo_parte = 2;
+SELECT * FROM Juez;
+SELECT * FROM Sala;
+SELECT * FROM EncargadoSala;
+SELECT * FROM AuxiliarSala;
+SELECT * FROM Delito;
+
+-- Partes
+SELECT id_parte, parte.id_tipo_parte, nombre_parte, tipo_parte FROM parte INNER JOIN tipoparte ON parte.id_tipo_parte = tipoparte.id_tipo_parte;
+SELECT CorreoP.id_correo, correo FROM CorreoP INNER JOIN ParteCorreoP ON CorreoP.id_correo = ParteCorreoP.id_correo WHERE id_parte = 1;
+SELECT TelefonoP.id_telefono, telefono FROM TelefonoP INNER JOIN ParteTelefonoP ON TelefonoP.id_telefono = ParteTelefonoP.id_telefono WHERE id_parte = 1;
+
+-- ------------------------------------------------------------------------------------
+-- Para crear un minuta, primero se tienen que agregar los delitos nuevos si es que hay
+INSERT INTO Delito (delito) VALUES (?);
+
+-- Después se tiene que agregar los datos del imputado y de la victima
+INSERT INTO Imputado (id_municipio, nombre_imputado, apellidos_imputado, edad_imputado) VALUES (?, ?, ?, ?);
+INSERT INTO Victima (id_municipio, nombre_victima, apellidos_victima, edad_victima) VALUES (?, ?, ?, ?);
+
+-- Con los ids obtenidos de las consultas anteriores agregan datos a las tablas: ImputadoDelito, MinutaImputado, ImputadoParte, MinutaVictima, VictimaParte
+INSERT INTO ImputadoDelito (id_imputado, id_delito) VALUES (?, ?);
+INSERT INTO ImputadoParte (id_parte, id_imputado) VALUES (?, ?);
+INSERT INTO VictimaParte (id_parte, id_victima) VALUES (?, ?);
+
+-- Agregamos el registro de la sala
+INSERT INTO RegistroSala (id_sala, id_encargado, id_auxiliar, id_juez) VALUES (?, ?, ?, ?);
+
+-- Agregamos los datos de la minuta
+INSERT INTO Minuta (id_municipio_delito, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+-- Estas van despues de crear la minuta
+INSERT INTO MinutaImputado (id_minuta, id_imputado) VALUES (?, ?);
+INSERT INTO MinutaVictima (id_minuta, id_victima) VALUES (?, ?);
+
+-- ------------------------------------------------------------------------------------

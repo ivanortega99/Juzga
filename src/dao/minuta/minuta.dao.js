@@ -1,14 +1,67 @@
 const db = require('../../config/db');
 
+// Obtener todas las minutas
+exports.getMinutas = async () => {
+    try {
+        let minutas = await db.query("SELECT * FROM Minuta");
+
+        return {
+            message: "Minutas obtenidas",
+            payload: minutas,
+            code: 200
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Obtener una minuta
+exports.getMinuta = async (id_minuta) => {
+    try {
+        let queryMinuta = "SELECT Minuta.id_minuta, Minuta.id_municipio, id_registro_sala, municipio, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia " +
+            "FROM Minuta INNER JOIN Municipio " +
+            "ON Minuta.id_municipio = Municipio.id_municipio " +
+            "WHERE id_minuta = ?";
+        let queryImputados = "SELECT Imputado.id_imputado, nombre_imputado, apellidos_imputado, edad, Imputado.id_municipio, municipio " +
+            "FROM MinutaImputado INNER JOIN Imputado INNER JOIN Municipio " +
+            "ON MinutaImputado.id_minuta = ? " +
+            "AND MinutaImputado.id_imputado = Imputado.id_imputado " +
+            "AND Imputado.id_municipio = Municipio.id_municipio";
+        let queryVictimas = "SELECT Victima.id_victima, nombre_victima, apellidos_victima, edad, Victima.id_municipio, municipio " +
+            "FROM MinutaVictima INNER JOIN Victima INNER JOIN Municipio " +
+            "ON MinutaVictima.id_minuta = ? " +
+            "AND MinutaVictima.id_victima = Victima.id_victima " +
+            "AND Victima.id_municipio = Municipio.id_municipio";
+        let querySala = "SELECT Sala.id_sala, nombre_sala, Juez.id_juez, nombre_juez, apellidos_juez, EncargadoSala.id_encargado, nombre_encargado, apellidos_encargado, AuxiliarSala.id_auxiliar, nombre_auxiliar, apellidos_auxiliar " +
+            "FROM RegistroSala INNER JOIN Sala INNER JOIN Juez INNER JOIN AuxiliarSala INNER JOIN EncargadoSala " +
+            "ON RegistroSala.id_sala = Sala.id_sala " +
+            "AND RegistroSala.id_encargado = EncargadoSala.id_encargado " +
+            "AND RegistroSala.id_auxiliar = AuxiliarSala.id_auxiliar " +
+            "AND RegistroSala.id_juez = Juez.id_juez " +
+            "WHERE RegistroSala.id_registro_sala = ?";
+
+        let minuta = await db.query(queryMinuta, id_minuta);
+        let imputados = await db.query(queryImputados, id_minuta);
+        let victimas = await db.query(queryVictimas, id_minuta);
+        let sala = await db.query(querySala, minuta[0].id_registro_sala);
+
+        minuta[0].imputados = imputados;
+        minuta[0].victimas = victimas;
+        minuta[0].salaInfo = sala;
+
+        return {
+            message: "Minuta obtenida!",
+            payload: minuta[0],
+            code: 200
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 // Crear una minuta
 exports.createMinuta = async (dataMinuta) => {
     try {
-        // Agregar delitos nuevos
-        // let { payload } = await this.getDataToCreateMinuta();
-        // let delitos = payload.delitos;
-        // let asesores = payload.asesores;
-        // let defensores = payload.defensores;
-
         if (dataMinuta.delitos.length > 0) {
             let newDelitos = dataMinuta.delitos;
             for (let i = 0; i < newDelitos.length; i++) {
@@ -23,7 +76,7 @@ exports.createMinuta = async (dataMinuta) => {
         // Agregar datos de imputado y la victima
         let imputados = [];
         for (let i = 0; i < dataMinuta.imputados.length; i++) {
-            let imputadoCreated = await db.query("INSERT INTO Imputado (id_municipio, nombre_imputado, apellidos_imputado, edad_imputado) VALUES (?, ?, ?, ?)", [
+            let imputadoCreated = await db.query("INSERT INTO Imputado (id_municipio, nombre_imputado, apellidos_imputado, edad) VALUES (?, ?, ?, ?)", [
                 dataMinuta.imputados[i].id_municipio_imputado,
                 dataMinuta.imputados[i].nombre_imputado,
                 dataMinuta.imputados[i].apellido_paterno_imputado + " " + dataMinuta.imputados[i].apellido_materno_imputado,
@@ -33,20 +86,21 @@ exports.createMinuta = async (dataMinuta) => {
             imputados.push(imputadoCreated.insertId);
         }
 
+        console.log('imputados: ', imputados);
+
         let victimas = [];
         for (let i = 0; i < dataMinuta.victimas.length; i++) {
-            let victimaCreated = await db.query("INSERT INTO Victima (id_municipio, nombre_victima, apellidos_victima, edad_victima) VALUES (?, ?, ?, ?)", [
-                dataMinuta.id_municipio_victima,
-                dataMinuta.nombre_victima,
-                dataMinuta.apellido_paterno_victima + " " + dataMinuta.apellido_materno_victima,
-                dataMinuta.edad_victima
+            let victimaCreated = await db.query("INSERT INTO Victima (id_municipio, nombre_victima, apellidos_victima, edad) VALUES (?, ?, ?, ?)", [
+                dataMinuta.victimas[i].id_municipio_victima,
+                dataMinuta.victimas[i].nombre_victima,
+                dataMinuta.victimas[i].apellido_paterno_victima + " " + dataMinuta.victimas[i].apellido_materno_victima,
+                dataMinuta.victimas[i].edad_victima
             ]);
 
             victimas.push(victimaCreated.insertId)
         }
 
-        // let id_imputado = imputadoCreated.insertId;
-        // let id_victima = victimaCreated.insertId;
+        console.log('victimas: ', victimas);
 
         // Insertar en las relaciones los datos correspondientes
         // Todos los imputados con todos los delitos y todos los imputados con todos los defensores
@@ -76,7 +130,6 @@ exports.createMinuta = async (dataMinuta) => {
             }
         }
 
-
         // Agregamos el registro de la sala
         let salaRegistro = await db.query("INSERT INTO RegistroSala (id_sala, id_encargado, id_auxiliar, id_juez) VALUES (?, ?, ?, ?)", [
             dataMinuta.id_sala,
@@ -86,18 +139,22 @@ exports.createMinuta = async (dataMinuta) => {
         ]);
 
         // Agregamos datos de la minuta
-        let queryMinuta = "INSERT INTO Minuta (id_municipio_delito, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia) " +
+        let queryMinuta = "INSERT INTO Minuta (id_municipio, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         let minutaAdded = await db.query(queryMinuta, [
             dataMinuta.id_municipio_delito,
             salaRegistro.insertId,
             dataMinuta.id_ministerio,
             dataMinuta.nuc_minuta,
-            dataMinuta.presentacion,
-            dataMinuta.fecha_ingreso,
-            dataMinuta.fecha_inicio,
-            dataMinuta.hora_inicio,
-            dataMinuta.hora_final,
+            dataMinuta.presentacion_minuta,
+            new Date(),
+            new Date(),
+            new Date(),
+            new Date(),
+            // dataMinuta.fecha_ingreso,
+            // dataMinuta.fecha_inicio,
+            // dataMinuta.hora_inicio,
+            // dataMinuta.hora_final,
             dataMinuta.duracion,
             dataMinuta.resolutivos,
             dataMinuta.observaciones,
@@ -115,15 +172,58 @@ exports.createMinuta = async (dataMinuta) => {
         // Agregar relación de los imputados con la minuta
         for (let i = 0; i < imputados.length; i++) {
             let minutaImpuado = await db.query("INSERT INTO MinutaImputado (id_minuta, id_imputado) VALUES (?, ?)", [
-                minutaAdded.inserId,
+                minutaAdded.insertId,
                 imputados[i]
             ]);
         }
         
         return {
             message: "Minuta added",
-            payload: { id_inserted: minutaAdded.inserId },
+            payload: { id_inserted: minutaAdded.insertId },
             code: 201
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Actualizar minuta
+
+
+// Eliminar minuta
+exports.deleteMinuta = async (id_minuta) => {
+    try {
+        let imputados = await db.query("SELECT * FROM MinutaImputado WHERE id_minuta = ?", id_minuta);
+        let victimas = await db.query("SELECT * FROM MinutaVictima WHERE id_minuta = ?", id_minuta);
+        let minuta = await db.query("SELECT id_registro_sala FROM Minuta WHERE id_minuta = ?", id_minuta);
+        
+        // Eliminar relacion de delitos
+        // Eliminar imputados y victimas
+        for (let i = 0; i < imputados.length; i++) {
+            let relationDelitos = await db.query("DELETE FROM ImputadoDelito WHERE id_imputado = ?", imputados[i].id_imputado);
+            let relationParte = await db.query("DELETE FROM ImputadoParte WHERE id_imputado = ?", imputados[i].id_imputado);
+            let relationMinuta = await db.query("DELETE FROM MinutaImputado WHERE id_imputado = ?", imputados[i].id_imputado);
+            let deleted = await db.query("DELETE FROM Imputado WHERE id_imputado = ?", imputados[i].id_imputado);
+        }
+
+        for (let i = 0; i < victimas.length; i++) {
+            let relationParte = await db.query("DELETE FROM VictimaParte WHERE id_victima = ?", victimas[i].id_victima);
+            let relationMinuta = await db.query("DELETE FROM MinutaVictima WHERE id_victima = ?", victimas[i].id_victima);
+            let deleted = await db.query("DELETE FROM Victima WHERE id_victima = ?", victimas[i].id_victima)
+        }
+        
+        // Eliminar de MinutaTipoAudiencia
+
+        // Eliminar Minuta
+        let minutaDeleted = await db.query("DELETE FROM Minuta WHERE id_minuta = ?", id_minuta);
+        
+        // Eliminar el RegistroSala
+        let registroDeleted = await db.query("DELETE FROM RegistroSala WHERE id_registro_sala = ?", minuta[0].id_registro_sala);
+
+        return {
+            message: "Minuta eliminada",
+            payload: {},
+            code: 200
         }
     } catch (err) {
         console.log(err);

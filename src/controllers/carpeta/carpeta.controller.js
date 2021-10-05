@@ -43,3 +43,36 @@ exports.createCarpeta = async (req, res) => {
         console.log(err);
     }
 }
+
+// Modificar carpeta
+exports.updateCarpeta = async (req, res) => {
+    try {
+        let id_carpeta = req.params.id;
+        let dataToUpdate = req.body;
+
+        let serviceResponse = await carpetaService.updateCarpeta(id_carpeta, dataToUpdate);
+
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Eliminar carpeta
+exports.deleteCarpeta = async (req, res) => {
+    try {
+        let id_carpeta = req.params.id;
+
+        let serviceResponse = await carpetaService.deleteCarpeta(id_carpeta);
+
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

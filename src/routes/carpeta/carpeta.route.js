@@ -12,4 +12,10 @@ router.get('/:id', carpetaController.getCarpeta);
 // Crear una carpeta
 router.post('/', carpetaController.createCarpeta);
 
+// Modificar carpeta
+router.put('/:id', carpetaController.updateCarpeta);
+
+// Eliminar carpeta
+router.delete('/:id', carpetaController.deleteCarpeta);
+
 module.exports = router;

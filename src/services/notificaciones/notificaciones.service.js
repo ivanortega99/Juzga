@@ -8,6 +8,11 @@ exports.getNotificaciones = async () => {
         return daoResponse;
     } catch (err) {
         console.log(err);
+        return {
+            message: "Error at notificaciones.service",
+            payload: {},
+            code: 500
+        }
     }
 }
 
@@ -19,6 +24,11 @@ exports.getNotificacion = async (idNotificacion) => {
         return daoResponse;
     } catch (err) {
         console.log(err);
+        return {
+            message: "Error at notificaciones.service",
+            payload: {},
+            code: 500
+        }
     }
 }
 
@@ -30,5 +40,42 @@ exports.createNotificaction = async (dataNotification) => {
         return daoResponse;
     } catch (err) {
         console.log(err);
+        return {
+            message: "Error at notificaciones.service",
+            payload: {},
+            code: 500
+        }
+    }
+}
+
+// Actualizar notificacion
+exports.updateNotification = async (id_notificacion, dataToUpdate) => {
+    try {
+        let daoResponse = await daoNotificaciones.updateNotification(id_notificacion, dataToUpdate);
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Error at notificaciones.service",
+            payload: {},
+            code: 500
+        }
+    }
+}
+
+// Eliminar notificacion
+exports.deleteNotification = async (id_notificacion) => {
+    try {
+        let daoResponse = await daoNotificaciones.deleteNotification(id_notificacion);
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Error at notificaciones.service",
+            payload: {},
+            code: 500
+        }
     }
 }

@@ -32,3 +32,25 @@ exports.createCarpeta = async (data) => {
         console.log(err);
     }
 }
+
+// Modificar carpeta
+exports.updateCarpeta = async (id_carpeta, dataToUpdate) => {
+    try {
+        let daoResponse = await carpetaDao.updateCarpeta(id_carpeta, dataToUpdate);
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Eliminar carpeta
+exports.deleteCarpeta = async (id_carpeta) => {
+    try {
+        let daoResponse = await carpetaDao.deleteCarpeta(id_carpeta);
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+    }
+}

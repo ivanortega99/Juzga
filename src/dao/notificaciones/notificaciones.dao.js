@@ -3,7 +3,7 @@ const db = require('../../config/db');
 // Obtener todas las notificaciones
 exports.getNotificaciones = async () => {
     try {
-        let notificaciones = await db.query("SELECT * FROM Notificaciones");
+        let notificaciones = await db.query("SELECT * FROM Notificacion");
 
         return {
             message: "Notificaciones obtenidas!",
@@ -12,18 +12,22 @@ exports.getNotificaciones = async () => {
         }
     } catch (err) {
         console.log(err);
+        return {
+            message: "Error at notificaciones.dao",
+            payload: {},
+            code: 500
+        }
     }
 }
 
 // Obtener una notificacion
 exports.getNotificacion = async (idNotificacion) => {
     try {
-        let query = "SELECT Notificaciones.id_notificacion, Notificador.id_notificador, Juez.id_juez, nombre_juez, apellidos_juez, nombre_notificador, apellidos_notificador, nuc, fecha, acuerdo, descripcion, archivo " +
-        "FROM Notificaciones INNER JOIN Juez INNER JOIN Notificador INNER JOIN NotificadorNotificaciones " +
-        "ON Notificaciones.id_juez = Juez.id_juez " +
-        "AND Notificaciones.id_notificacion = NotificadorNotificaciones.id_notificacion " +
-        "AND NotificadorNotificaciones.id_notificador = Notificador.id_notificador " +
-        "WHERE Notificaciones.id_notificacion = ?";
+        let query = "SELECT Notificacion.id_notificacion, Notificador.id_notificador, Juez.id_juez, nombre_juez, apellidos_juez, nombre_notificador, apellidos_notificador, nuc_notificacion, fecha, acuerdo, descripcion, archivo " +
+        "FROM Notificacion INNER JOIN Juez INNER JOIN Notificador " +
+        "ON Notificacion.id_juez = Juez.id_juez " +
+        "AND Notificacion.id_notificador = Notificador.id_notificador " +
+        "WHERE Notificacion.id_notificacion = ?";
 
         let notificacion = await db.query(query, [idNotificacion]);
 
@@ -34,24 +38,26 @@ exports.getNotificacion = async (idNotificacion) => {
         }
     } catch (err) {
         console.log(err);
+        return {
+            message: "Error at notificaciones.dao",
+            payload: {},
+            code: 500
+        }
     }
 }
 
 // Crear notificacion
 exports.createNotification = async (dataNotification) => {
     try {
-        console.log('here', dataNotification)
-        let notificationCreated = await db.query("INSERT INTO Notificaciones (id_juez, nuc, acuerdo, fecha, descripcion, archivo) VALUES (?, ?, ?, ?, ?, ?)", [
+        let notificationCreated = await db.query("INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (?, ?, ?, ?, ?, ?, ?)", [
             dataNotification.id_juez,
-            dataNotification.nuc,
+            dataNotification.id_notificador,
+            dataNotification.nuc_notificacion,
             dataNotification.acuerdo,
             new Date(),
             dataNotification.descripcion,
             dataNotification.archivo
         ]);
-
-
-        let relationship = await db.query("INSERT INTO NotificadorNotificaciones (id_notificacion, id_notificador) VALUES (?, ?)", [notificationCreated.insertId, dataNotification.id_notificador])
 
         return {
             message: "Notificacion creada",
@@ -59,6 +65,56 @@ exports.createNotification = async (dataNotification) => {
             code: 201
         }
     } catch (err) {
-        
+        console.log(err);
+        return {
+            message: "Error at notificaciones.dao",
+            payload: {},
+            code: 500
+        }
+    }
+}
+
+// Actualizar notificacion
+exports.updateNotification = async (id_notificacion, dataToUpdate) => {
+    try {
+        let notificacionUpdated = await db.query("UPDATE Notificacion SET nuc_notificacion = ?, acuerdo = ?, descripcion = ? WHERE id_notificacion = ?", [
+            dataToUpdate.nuc_notificacion,
+            dataToUpdate.acuerdo,
+            dataToUpdate.descripcion,
+            id_notificacion
+        ]);
+
+        return {
+            message: "Notificación actualizada",
+            payload: { updated: id_notificacion },
+            code: 201
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Error at notificaciones.dao",
+            payload: {},
+            code: 500
+        }
+    }
+}
+
+// Eliminar notificacion
+exports.deleteNotification = async (id_notificacion) => {
+    try {
+        let notificactionDeleted = await db.query("DELETE FROM Notificacion WHERE id_notificacion = ?", id_notificacion);
+
+        return {
+            message: "Notificación eliminada!",
+            payload: { deleted: id_notificacion },
+            code: 200
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Error at notificaciones.dao",
+            payload: {},
+            code: 500
+        }
     }
 }

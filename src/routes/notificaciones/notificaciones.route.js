@@ -12,4 +12,10 @@ router.get('/:id', notificacionesController.getNotificacion);
 // Crear notificaciones
 router.post('/', notificacionesController.createNotification);
 
+// Actualizar notificacion
+router.put('/:id', notificacionesController.updateNotification);
+
+// Eliminar notificacion
+router.delete('/:id', notificacionesController.deleteNotification);
+
 module.exports = router;

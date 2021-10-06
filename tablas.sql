@@ -78,10 +78,13 @@ CREATE TABLE Notificacion (
 	id_juez INT NOT NULL,
 	id_notificador INT NOT NULL,
 	nuc_notificacion VARCHAR(100),
-	acuerdo VARCHAR(100),
-	fecha DATE,
-	descripcion VARCHAR(100),
-	archivo VARCHAR(100),
+	acuerdo_notificacion VARCHAR(100),
+	fecha_notificacion DATE,
+	hora_notificacion TIME,
+	descripcion_notificacion VARCHAR(100),
+	archivo_notificacion VARCHAR(100),
+	notificacion_enviada BOOLEAN,
+	notificacion_entregada BOOLEAN,
 
 	PRIMARY KEY (id_notificacion),
 	FOREIGN KEY (id_juez) REFERENCES Juez(id_juez),
@@ -300,82 +303,171 @@ INSERT INTO TipoParte (tipo_parte) VALUES ('Defensor');
 INSERT INTO TipoParte (tipo_parte) VALUES ('Asesor juridico');
 INSERT INTO TipoParte (tipo_parte) VALUES ('Ministerio publico');
 
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor1');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor2');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, 'Defensor3');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor1');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor2');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, 'Asesor3');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio1');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio2');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, 'Ministerio3');
-INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (?, ?);
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "RIGOBERTO GUZMAN OCHO");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "AGUSTÍN ALONSO LOPEZ CANTERO");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "FELIPE ARIAS DE LA TORRE");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "MANUEL ALEJANDRO ZUÑIGA LARIOS");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "GERMAN IBARRA DE LA CRUZ");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (1, "ALEXIS MARTÍN CASTILLO CHÁVEZ");
 
-INSERT INTO CorreoP (correo) VALUES ('def1@email.com');
-INSERT INTO CorreoP (correo) VALUES ('def2@email.com');
-INSERT INTO CorreoP (correo) VALUES ('def3@email.com');
-INSERT INTO CorreoP (correo) VALUES ('ase1@email.com');
-INSERT INTO CorreoP (correo) VALUES ('ase2@email.com');
-INSERT INTO CorreoP (correo) VALUES ('ase3@email.com');
-INSERT INTO CorreoP (correo) VALUES ('min1@email.com');
-INSERT INTO CorreoP (correo) VALUES ('min2@email.com');
-INSERT INTO CorreoP (correo) VALUES ('min3@email.com');
-INSERT INTO CorreoP (correo) VALUES ('def4@email.com');
-INSERT INTO CorreoP (correo) VALUES ('ase4@email.com');
-INSERT INTO CorreoP (correo) VALUES ('min4@email.com');
-INSERT INTO CorreoP (correo) VALUES (?);
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (2, "ORLANDO TOMAS CHÁVEZ TORRES");
 
-INSERT INTO TelefonoP (telefono) VALUES ('123');
-INSERT INTO TelefonoP (telefono) VALUES ('123');
-INSERT INTO TelefonoP (telefono) VALUES ('123');
-INSERT INTO TelefonoP (telefono) VALUES ('456');
-INSERT INTO TelefonoP (telefono) VALUES ('456');
-INSERT INTO TelefonoP (telefono) VALUES ('456');
-INSERT INTO TelefonoP (telefono) VALUES ('789');
-INSERT INTO TelefonoP (telefono) VALUES ('789');
-INSERT INTO TelefonoP (telefono) VALUES ('789');
-INSERT INTO TelefonoP (telefono) VALUES ('123');
-INSERT INTO TelefonoP (telefono) VALUES ('456');
-INSERT INTO TelefonoP (telefono) VALUES ('789');
-INSERT INTO TelefonoP (telefono) VALUES (?);
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "ANEL NAYELI VAZQUEZ FAJARDO");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "MARIBEL DÍAZ MARTÍNEZ");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "ALEJANDRO GILDO ALCANTAR");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "PATRICIA NATALY VALENCIA");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "LOURDES MONTOYA PULIDO");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "IVONNE MOYA RIVERA");
+INSERT INTO Parte (id_tipo_parte, nombre_parte) VALUES (3, "MÓNICA GUADALUPE CHÁVEZ VARGAS");
 
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (1, 1);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (2, 2);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (3, 3);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (4, 4);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (5, 5);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (6, 6);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (7, 7);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (8, 8);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (9, 9);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (1, 10);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (2, 11);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (3, 12);
-INSERT INTO ParteCorreoP (id_parte, id_correo) VALUES (?, ?);
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ACUMULACIÓN DE CAUSAS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ADMISIÓN DE ACCIÓN PRIVADA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AJUSTES AL PROCEDIMIENTO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AJUSTES RAZONABLES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AMPLIACIÓN PARA EL TERMINO DE INVESTIGACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("APERTURA DE CONTROVERSIA DE MODIFICACION DE LA SANCION PRIVATIVA DE LA LIBERTAD");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("APERTURA DE PROCEDIMIENTO ESPECIAL DE INIMPUTABILIDAD");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("APROBACIÓN DE ACUERDO REPARATORIO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ASUNCION DE LA COMPETENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AUTO DE APERTURA A JUICIO ORAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AUTORIZACIÓN DE ACTOS DE INVESTIGACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AUTORIZACIÓN DE EXHUMACIÓN DE CADAVER");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AUTORIZACIÓN JUDICIAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("AUTORIZACIÓN JUDICIAL DE TOMA DE FLUIDOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONMUTACION DE LA PENA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTINUACIÓN AUDIENCIA INICIAL (CUMPLIMENTACIÓN DE ORDEN DE APREHENSIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTINUACIÓN AUDIENCIA INICIAL (FORMULACIÓN DE IMPUTACIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTINUACIÓN DE AUDIENCIA A JUICIO ORAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTINUACIÓN DE ETAPA INTERMEDIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTINUACIÓN DE INDIVIDUALIZACIÓN DE SANCIONES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTROL DE DETENCIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTROL DE GARANTÍAS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONTROL JUDICIAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("CONVALIDACION DE ACTUACIONES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DEBATE DE ADMISIÓN DE MEDIOS DE PRUEBA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DEBATE DE PLAZO DE INVESTIGACION COMPLEMENTARIA (PUBLICA)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DECLARACIÓN DE SUSTRACCIÓN DE LA ACCIÓN DE LA JUSTICIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DECLARACIÓN DEL IMPUTADO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DESAHOGO DE PRUEBA ANTICIPADA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("DETERMINACIÓN DE COMPETENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("EJECUCIÓN DE SANCIONES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ESCRITO, PRESENTACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ESCUCHAR A LAS PARTES RESPECTO DE LA APROBACIÓN DE ACUERDO REPARATORIO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("EXHORTO, CUMPLIMIENTO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("EXTINCION PENAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("FORMULACIÓN DE IMPUTACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("FORMULACIÓN DE IMPUTACIÓN (APREHENSIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("FORMULACIÓN DE IMPUTACIÓN (COMPARECENCIA)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("FORMULACIÓN DE IMPUTACIÓN (APELACION)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("IMPOSICIÓN DE MEDIDA CAUTELAR");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("IMPOSICIÓN DE MEDIDA CAUTELAR (APREHENSION)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("IMPUGNACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("IMPUGNACIÓN, CONTINUACION");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INCOMPETENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INCOMPETENCIA, ESCRITO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INCONFORMIDAD DE ARCHIVO TEMPORAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INDIVIDUALIZACIÓN DE SANCIONES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INICIAL (CUMPLIMIENTO ORDEN DE APREHENSIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INICIAL (CUMPLIMIENTO ORDEN DE COMPARECENCIA)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INTERMEDIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("INTERMEDIA (CUMPLIMIENTO APREHENSION)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("JUICIO ORAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("LECTURA DE SENTENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("LEGALIDAD DE LA DETERMINACIÓN ADMINISTRATIVA DE TRASLADO DE LOS IMPUTADOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("LIBERTAD CONDICIONADA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("MEDIDA PROVISIONAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("MODIFICACIÓN DE MEDIDA CAUTELAR");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("MODIFICACIÓN DE MEDIDAS DE PROTECCIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("NULIDAD DE ACTUACIONES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("NULIDAD DATOS DE PRUEBA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("ORDEN DE CATEO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PARA DECLARAR LA INCOMPETENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PERDON LEGAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PLAZO DE CIERRE DE INVESTIGACION COMPLEMENTARIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PROCEDIMIENTO ABREVIADO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PRORROGA DE CIERRE DE INVESTIGACIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PRÓRROGA DE MEDIDAS DE PROTECCIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PRÓRROGA DE PLAZO DE MEDIDA CAUTELAR");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PRORROGA PARA EL PLAZO DE INVESTIGACIÓN COMPLEMENTARIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PRORROGA PARA EL PLAZO DE INVESTIGACIÓN COMPLEMENTARIA (no se aprueba)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("PROVIDENCIA PRECAUTORIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICACIÓN DE ACUERDOS REPARATORIOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICACIÓN DE FIRMA A CARGO DEL IMPUTADO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICACIÓN DE INGRESO A LUGAR CERRADO (PRIVADA)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICACION DE LA SUBSISTENCIA DE LOS DATOS CONSERVADOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICACIÓN DE MEDIDAS DE PROTECCIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RATIFICAR CONSENTIMIENTO DE INGRESO A LUGAR CERRADO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REANUDACIÓN DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REANUDACIÓN DE LA SUSPENSIÓN DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REANUDACIÓN DEL PROCESO POR ORDEN DE APREHENSIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REAPERTURA DE INVESTIGACION COMPLEMENTARIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REAPERTURA DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RECURSO DE INCUMPLIMIENTO EN CONTRA DE LA DETERMINACIÓN DE ARCHIVO TEMPORAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RECURSO DE REVOCACION PLANTEADOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RECLASIFICACION DEL DELITO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("RELATIVA A LA IMPUGNACIÓN PLANTEADA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REPOSICIÓN DEL PROCEDIMIENTO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE ACUERDOS REPARATORIOS");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE CONDICIONES DE SUSPENSIÓN DE PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE CUMPLIMIENTO DE CONDICIONANTES DERIVADAS DE LA SUSPENSIÓN CONDICIONAL DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE LA SUSPENSIÓN CONDICIONAL DE LA PENA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE LAS CONDICIONES Y OBLIGACIONES DE LA SUSPENSIÓN CONDICIONAL DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE LAS CONDICIONES Y OBLIGACIONES IMPUESTAS DE LA SUSPENSIÓN CONDICIONAL DEL PROCESO (CUMPLIMIENTO ORDEN DE APREHENSIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE MEDIDAS CAUTELARES");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE MEDIDAS CAUTELARES (CUMPLIMIENTO DE ORDEN DE APREHENSIÓN)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVISIÓN DE MEDIDAS DE PROTECCIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVOCACIÓN DE LA SUSPENSIÓN CONDICIONAL DE LA PENA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("REVOCACIÓN DE LA SUSPENSIÓN CONDICIONAL DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SIN AUDIENCIA (OTROS)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO (A. reparatorio)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO (fallecimiento)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO (continua la causa)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO (Susp cond proceso)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOBRESEIMIENTO parcial");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOLICITUD DE ORDEN COMPARECENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOLICITUD DE ORDEN COMPARECENCIA EN AUDIENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOLICITUD DE ORDEN DE APREHENSIÓN EN AUDIENCIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOLICITUD DE ORDEN DE APREHENSIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SOLICITUD DE TRASLADO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN CONDICIONAL DE LA PENA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN CONDICIONAL DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN CONDICIONAL DEL PROCESO (aprehension)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN DE LA ACCIÓN PENAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN DEL PRECESO ACUERDO REPARATORIO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSPENSIÓN DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSTITUCIÓN DE LA PENA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSTRACCIÓN A LA ACCIÓN DE LA JUSTICIA");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("SUSTRACCIÓN A LA ACCIÓN DE LA JUSTICIA Y ORDEN DE APREHENSIÓN");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VERIFICACION DE CUMPLIMIENTO DE ACUERDO REPARATORIO EN CUMPLIMIENTO DE ORDEN DE APREHENSION");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VERIFICACION DE CEDULA PROFESIONAL");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VERIFICACIÓN DE CUMPLIMIENTO DE SUSPENSIÓN CONDICIONAL DEL PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VERIFICACIÓN Y APROBACIÓN DE ACUERDO REPARATORIO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VINCULACIÓN A PROCESO");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VINCULACIÓN A PROCESO (CUMPLIMENTACION DE ORDEN DE APREHENSION)");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("VIGENCIA ORDEN DE APREHENSION");
+INSERT INTO TipoAudiencia (tipo_audiencia) VALUES ("?");
 
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (1, 1);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (2, 2);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (3, 3);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (4, 4);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (5, 5);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (6, 6);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (7, 7);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (8, 8);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (9, 9);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (1, 10);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (2, 11);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (3, 12);
-INSERT INTO ParteTelefonoP (id_parte, id_telefono) VALUES (?, ?);
+INSERT INTO Sala (nombre_sala) VALUES ("1");
+INSERT INTO Sala (nombre_sala) VALUES ("2");
+INSERT INTO Sala (nombre_sala) VALUES ("ZOOM");
+INSERT INTO Sala (nombre_sala) VALUES ("TELMEX");
 
-INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Luis', ' Ceja Luna');
-INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ('Carlos', 'Solano Vega');
-INSERT INTO EncargadoSala (nombre_encargado, apellidos_encargado) VALUES ('Luis', 'Ceja Luna');
-INSERT INTO EncargadoSala (nombre_encargado, apellidos_encargado) VALUES ('Carlos', 'Solano Vega');
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ("IVÁN",  "GÓMEZ VEGA");
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ("ENRIQUE", "ESPINOZA NIÑO");
+INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ("LOURDES ANGÉLICA", "DELGADO ALVÁREZ");
 
-INSERT INTO Sala (nombre_sala) VALUES ('Sala1');
-INSERT INTO Sala (nombre_sala) VALUES ('Sala2');
-INSERT INTO Sala (nombre_sala) VALUES ('Zoom');
-INSERT INTO Sala (nombre_sala) VALUES ('Telmex');
+INSERT INTO EncargadoSala (nombre_encargado, apellidos_encargado) VALUES ("ILDA ALEJANDRA", "GUERRERO MARTINEZ");
+INSERT INTO EncargadoSala (nombre_encargado, apellidos_encargado) VALUES ("OSCAR", "MURGUIA TORRES"); 
+
+INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ("VIRIDIANA", "ROMERO BARAJAS");
+INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ("COLUMBA MONTSERRAT", "LUIS JUAN LÓPEZ");
+INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ("JOSE ANTONIO", "FLORES LUNA");
+INSERT INTO AuxiliarSala (nombre_auxiliar, apellidos_auxiliar) VALUES ("DANIEL", "URIBE ZABALZA");
+
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ("MARIELA YOHANA", "LIZAOLA HERNANDEZ");
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ("MARIA", "DEL ROSARIO");
+INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ("MOISES", "GARCIA CARRIÓN");
 
 INSERT INTO Usuario (id_tipo_usuario, nombre_usuario, apellidos_usuario, email, username, contrasena) VALUES (1, 'Luis David', 'Ceja Luna', 'ceja.luna.luis.david@gmail.com', 'LunaMan', '$2a$10$.is35Ed4xnPkhy52rvD6D.kg9te2Q1MvH992aNMIdgqQdcHwyBQaW');
 
@@ -385,27 +477,6 @@ INSERT INTO Delito (delito) VALUES ('Roba a mano armada');
 INSERT INTO Delito (delito) VALUES ('Robo1');
 INSERT INTO Delito (delito) VALUES ('Robo2');
 INSERT INTO Delito (delito) VALUES ('Robo3');
-
-INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('123', '123', '123', now(), now(), '123', 0, 0, 1, 1, '123', '123');
-INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 2);
-INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 3);
-INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 4);
-INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('456', '456', '456', now(), now(), '456', 0, 0, 1, 1, '456', '456');
-INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 5);
-INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
-
-INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Luis', 'Ceja Luna');
-INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Carlos', 'Solano Vega');
-INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Lupita', 'García Ortega');
-INSERT INTO Juez (nombre_juez, apellidos_juez) VALUES ('Angell', 'Ayala Aquino');
-
-INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Luis', 'Ceja Luna');
-INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Carlos', 'Solano Vega');
-INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Lupita', 'García Ortega');
-INSERT INTO Notificador (nombre_notificador, apellidos_notificador) VALUES ('Angell', 'Ayala Aquino');
-
-INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, 2, '123', 'acuerdo', now(), '123', '123');
-INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (2, 1, '456', 'acuerdo', now(), '456', '456');
 
 INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 ('Acatlán de Juárez'),
@@ -533,43 +604,6 @@ INSERT INTO Municipio (municipio) VALUES ('Acatic'),
 ('Zapotlán el Grande'),
 ('Zapotlanejo');
 
--- UPDATE Usuario 
--- SET nombre_usuario = '', apellidos_usuario = '', email = '', username = '', contrasena = '', id_tipo_usuario = 2
--- WHERE id_usuario = 
-
--- ALTER TABLE Usuario CHANGE nombre nombre_usuario VARCHAR(100);
--- ALTER TABLE Usuario CHANGE apellidos apellidos_usuario VARCHAR(100);
--- ALTER TABLE Usuario CHANGE nombre_usuario username VARCHAR(100);
-
--- ALTER TABLE Imputado CHANGE nombre nombre_imputado VARCHAR(100);
--- ALTER TABLE Imputado CHANGE apellidos apellidos_imputado VARCHAR(100);
-
--- ALTER TABLE Victima CHANGE nombre nombre_victima VARCHAR(100);
--- ALTER TABLE Victima CHANGE apellidos apellidos_victima VARCHAR(100);
-
--- ALTER TABLE MinisterioPublico CHANGE nombre nombre_ministerio VARCHAR(100);
-
--- ALTER TABLE Juez CHANGE nombre nombre_juez VARCHAR(100);
--- ALTER TABLE Juez CHANGE apellidos apellidos_juez VARCHAR(100);
-
--- ALTER TABLE Notificador CHANGE nombre nombre_notificador VARCHAR(100);
--- ALTER TABLE Notificador CHANGE apellidos apellidos_notificador VARCHAR(100);
-
--- ALTER TABLE AuxiliarSala CHANGE nombre nombre_auxiliar VARCHAR(100);
--- ALTER TABLE AuxiliarSala CHANGE apellidos apellidos_auxiliar VARCHAR(100);
-
--- ALTER TABLE EncargadoSala CHANGE nombre nombre_encargado VARCHAR(100);
--- ALTER TABLE EncargadoSala CHANGE apellidos apellidos_encargado VARCHAR(100);
-
--- ALTER TABLE Parte CHANGE nombre nombre_parte VARCHAR(100);
--- ALTER TABLE TipoUsuario CHANGE tipo tipo_usuario VARCHAR(100);
--- ALTER TABLE TipoParte CHANGE tipo tipo_parte VARCHAR(100);
--- ALTER TABLE TipoAudiencia CHANGE tipo tipo_audiencia VARCHAR(100);
--- ALTER TABLE Carpeta CHANGE tipo tipo_carpeta VARCHAR(100);
--- ALTER TABLE Notificaciones CHANGE nuc nuc_notificacion VARCHAR(100);
--- ALTER TABLE Carpeta CHANGE nuc nuc_carpeta VARCHAR(100);
--- ALTER TABLE Minuta CHANGE nuc nuc_minuta VARCHAR(100);
-
 -- Datos necesarios para crear una minuta (ministerio publico, defensores, asesores, jueces, salas, encargados, auxiliares, delitos)
 SELECT id_parte, nombre_parte FROM Parte WHERE id_tipo_parte = 3;
 SELECT id_parte, nombre_parte FROM Parte WHERE id_tipo_parte = 1;
@@ -609,4 +643,17 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 INSERT INTO MinutaImputado (id_minuta, id_imputado) VALUES (?, ?);
 INSERT INTO MinutaVictima (id_minuta, id_victima) VALUES (?, ?);
 
+-- ------------------------------------------------------------------------------------
+-- Crear carpetas
+INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('123', '123', '123', now(), now(), '123', 0, 0, 1, 1, '123', '123');
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 2);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 3);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (1, 4);
+INSERT INTO Carpeta (nuc_carpeta, tipo_carpeta, presentacion_carpeta, fecha_ingreso_carpeta, fecha_inicio_carpeta, duracion_carpeta, judicalizada_carpeta, nuevo_carpeta, archivo_muerto_carpeta, vinculacion_carpeta, rol_carpeta, oficio_carpeta) VALUES ('456', '456', '456', now(), now(), '456', 0, 0, 1, 1, '456', '456');
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 5);
+INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
+
+
+INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, 2, '123', 'acuerdo', now(), '123', '123');
+INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (2, 1, '456', 'acuerdo', now(), '456', '456');
 -- ------------------------------------------------------------------------------------

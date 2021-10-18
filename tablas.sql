@@ -79,8 +79,8 @@ CREATE TABLE Notificacion (
 	id_notificador INT NOT NULL,
 	nuc_notificacion VARCHAR(100),
 	acuerdo_notificacion VARCHAR(100),
-	fecha_notificacion DATE,
-	hora_notificacion TIME,
+	fecha_notificacion VARCHAR(100),
+	hora_notificacion VARCHAR(100),
 	descripcion_notificacion VARCHAR(100),
 	archivo_notificacion VARCHAR(100),
 	notificacion_enviada BOOLEAN,
@@ -170,8 +170,8 @@ CREATE TABLE Carpeta (
 	nuc_carpeta VARCHAR(100),
 	tipo_carpeta VARCHAR(100),
 	presentacion_carpeta VARCHAR(100),
-	fecha_ingreso_carpeta DATE,
-	fecha_inicio_carpeta DATE,
+	fecha_ingreso_carpeta VARCHAR(100),
+	fecha_inicio_carpeta VARCHAR(100),
 	duracion_carpeta VARCHAR(100),
 	judicalizada_carpeta BOOLEAN,
 	nuevo_carpeta BOOLEAN,
@@ -190,10 +190,10 @@ CREATE TABLE Minuta (
 	id_parte INT NOT NULL,
 	nuc_minuta VARCHAR(100),
 	presentacion_minuta VARCHAR(100),
-	fecha_ingreso_minuta DATE,
-	fecha_inicio_minuta DATE,
-	hora_inicio_minuta DATE,
-	hora_final_minuta DATE,
+	fecha_ingreso_minuta VARCHAR(100),
+	fecha_inicio_minuta VARCHAR(100),
+	hora_inicio_minuta VARCHAR(100),
+	hora_final_minuta VARCHAR(100),
 	duracion_minuta VARCHAR(100),
 	resolutivos_minuta VARCHAR(100),
 	observaciones_minuta VARCHAR(100),
@@ -657,3 +657,11 @@ INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (2, 6);
 INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (1, 2, '123', 'acuerdo', now(), '123', '123');
 INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo, fecha, descripcion, archivo) VALUES (2, 1, '456', 'acuerdo', now(), '456', '456');
 -- ------------------------------------------------------------------------------------
+
+ALTER TABLE Carpeta MODIFY fecha_ingreso_carpeta VARCHAR(100);
+ALTER TABLE Carpeta MODIFY fecha_inicio_carpeta VARCHAR(100);
+
+ALTER TABLE Minuta MODIFY fecha_ingreso_minuta VARCHAR(100);
+ALTER TABLE Minuta MODIFY fecha_inicio_minuta VARCHAR(100);
+ALTER TABLE Minuta MODIFY hora_inicio_minuta VARCHAR(100);
+ALTER TABLE Minuta MODIFY hora_final_minuta VARCHAR(100);

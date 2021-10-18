@@ -45,7 +45,15 @@ exports.createMinuta = async (dataMinuta) => {
 }
 
 // Actualizar minuta
+exports.updateMinuta = async (id_minuta, dataToUpdate) => {
+    try {
+        let daoResponse = await daoMinuta.updateMinuta(id_minuta, dataToUpdate);
 
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // Eliminar minuta
 exports.deleteMinuta = async (id_minuta) => {

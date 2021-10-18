@@ -76,3 +76,17 @@ exports.deleteCarpeta = async (req, res) => {
         console.log(err);
     }
 }
+
+// Obtener delitos
+exports.getDelitos = async (req, res) => {
+    try {
+        let serviceResponse = await carpetaService.getDelitos();
+
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}

@@ -3,7 +3,7 @@ const db = require('../../config/db');
 // Obtener todas las notificaciones
 exports.getNotificaciones = async () => {
     try {
-        let notificaciones = await db.query("SELECT nuc_notificacion, CONCAT(nombre_notificador, ' ', apellidos_notificador) AS Notificador, CONCAT(nombre_juez, ' ', apellidos_juez) AS Juez, fecha_notificacion, notificacion_enviada " +
+        let notificaciones = await db.query("SELECT Notificacion.id_notificacion, nuc_notificacion, CONCAT(nombre_notificador, ' ', apellidos_notificador) AS Notificador, CONCAT(nombre_juez, ' ', apellidos_juez) AS Juez, fecha_notificacion, notificacion_enviada " +
             "FROM Notificacion INNER JOIN Juez INNER JOIN Notificador " +
             "ON Notificacion.id_juez = Juez.id_juez " +
             "AND Notificacion.id_notificador = Notificador.id_notificador");
@@ -52,18 +52,13 @@ exports.getNotificacion = async (idNotificacion) => {
 // Crear notificacion
 exports.createNotification = async (dataNotification) => {
     try {
-        let date = new Date();
-        let hour = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
-
         let notificationCreated = await db.query("INSERT INTO Notificacion (id_juez, id_notificador, nuc_notificacion, acuerdo_notificacion, fecha_notificacion, hora_notificacion, descripcion_notificacion, archivo_notificacion, notificacion_enviada, notificacion_entregada) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
             dataNotification.id_juez,
             dataNotification.id_notificador,
             dataNotification.nuc_notificacion,
             dataNotification.acuerdo,
-            date,
-            hour + ":" + minutes + ":" + seconds,
+            dataNotification.fecha_notificacion,
+            dataNotification.hora_notificacion,
             dataNotification.descripcion,
             dataNotification.archivo,
             true,

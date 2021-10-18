@@ -18,16 +18,16 @@ exports.getMinutas = async () => {
 // Obtener una minuta
 exports.getMinuta = async (id_minuta) => {
     try {
-        let queryMinuta = "SELECT Minuta.id_minuta, Minuta.id_municipio, id_registro_sala, municipio, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia " +
+        let queryMinuta = "SELECT Minuta.id_minuta, Minuta.id_municipio_delito, id_registro_sala, municipio, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia " +
             "FROM Minuta INNER JOIN Municipio " +
-            "ON Minuta.id_municipio = Municipio.id_municipio " +
+            "ON Minuta.id_municipio_delito = Municipio.id_municipio " +
             "WHERE id_minuta = ?";
-        let queryImputados = "SELECT Imputado.id_imputado, nombre_imputado, apellidos_imputado, edad, Imputado.id_municipio, municipio " +
+        let queryImputados = "SELECT Imputado.id_imputado, nombre_imputado, apellidos_imputado, edad_imputado, Imputado.id_municipio, municipio " +
             "FROM MinutaImputado INNER JOIN Imputado INNER JOIN Municipio " +
             "ON MinutaImputado.id_minuta = ? " +
             "AND MinutaImputado.id_imputado = Imputado.id_imputado " +
             "AND Imputado.id_municipio = Municipio.id_municipio";
-        let queryVictimas = "SELECT Victima.id_victima, nombre_victima, apellidos_victima, edad, Victima.id_municipio, municipio " +
+        let queryVictimas = "SELECT Victima.id_victima, nombre_victima, apellidos_victima, edad_victima, Victima.id_municipio, municipio " +
             "FROM MinutaVictima INNER JOIN Victima INNER JOIN Municipio " +
             "ON MinutaVictima.id_minuta = ? " +
             "AND MinutaVictima.id_victima = Victima.id_victima " +
@@ -62,6 +62,7 @@ exports.getMinuta = async (id_minuta) => {
 // Crear una minuta
 exports.createMinuta = async (dataMinuta) => {
     try {
+        // Agregar delitos nuevos
         if (dataMinuta.delitos.length > 0) {
             let newDelitos = dataMinuta.delitos;
             for (let i = 0; i < newDelitos.length; i++) {
@@ -76,7 +77,7 @@ exports.createMinuta = async (dataMinuta) => {
         // Agregar datos de imputado y la victima
         let imputados = [];
         for (let i = 0; i < dataMinuta.imputados.length; i++) {
-            let imputadoCreated = await db.query("INSERT INTO Imputado (id_municipio, nombre_imputado, apellidos_imputado, edad) VALUES (?, ?, ?, ?)", [
+            let imputadoCreated = await db.query("INSERT INTO Imputado (id_municipio, nombre_imputado, apellidos_imputado, edad_imputado) VALUES (?, ?, ?, ?)", [
                 dataMinuta.imputados[i].id_municipio_imputado,
                 dataMinuta.imputados[i].nombre_imputado,
                 dataMinuta.imputados[i].apellido_paterno_imputado + " " + dataMinuta.imputados[i].apellido_materno_imputado,
@@ -90,7 +91,7 @@ exports.createMinuta = async (dataMinuta) => {
 
         let victimas = [];
         for (let i = 0; i < dataMinuta.victimas.length; i++) {
-            let victimaCreated = await db.query("INSERT INTO Victima (id_municipio, nombre_victima, apellidos_victima, edad) VALUES (?, ?, ?, ?)", [
+            let victimaCreated = await db.query("INSERT INTO Victima (id_municipio, nombre_victima, apellidos_victima, edad_victima) VALUES (?, ?, ?, ?)", [
                 dataMinuta.victimas[i].id_municipio_victima,
                 dataMinuta.victimas[i].nombre_victima,
                 dataMinuta.victimas[i].apellido_paterno_victima + " " + dataMinuta.victimas[i].apellido_materno_victima,
@@ -137,9 +138,9 @@ exports.createMinuta = async (dataMinuta) => {
             dataMinuta.id_auxiliar,
             dataMinuta.id_juez
         ]);
-
+        
         // Agregamos datos de la minuta
-        let queryMinuta = "INSERT INTO Minuta (id_municipio, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia) " +
+        let queryMinuta = "INSERT INTO Minuta (id_municipio_delito, id_registro_sala, id_parte, nuc_minuta, presentacion_minuta, fecha_ingreso_minuta, fecha_inicio_minuta, hora_inicio_minuta, hora_final_minuta, duracion_minuta, resolutivos_minuta, observaciones_minuta, desahogo_audiencia) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         let minutaAdded = await db.query(queryMinuta, [
             dataMinuta.id_municipio_delito,
@@ -147,19 +148,23 @@ exports.createMinuta = async (dataMinuta) => {
             dataMinuta.id_ministerio,
             dataMinuta.nuc_minuta,
             dataMinuta.presentacion_minuta,
-            new Date(),
-            new Date(),
-            new Date(),
-            new Date(),
-            // dataMinuta.fecha_ingreso,
-            // dataMinuta.fecha_inicio,
-            // dataMinuta.hora_inicio,
-            // dataMinuta.hora_final,
+            dataMinuta.fecha_ingreso_minuta,
+            dataMinuta.fecha_inicio_minuta,
+            dataMinuta.hora_ingreso_minuta,
+            dataMinuta.hora_final_minuta,
             dataMinuta.duracion,
             dataMinuta.resolutivos,
             dataMinuta.observaciones,
             dataMinuta.desahogo_audiencia
         ]);
+
+        // Agregar el tipo de audiencia
+        for (let i = 0; i < dataMinuta.tipo_minuta.length; i++) {
+            let tipoAudiencia = await db.query("INSERT INTO MinutaTipoAudiencia (id_minuta, id_tipo_audiencia) VALUES (?, ?)", [
+                minutaAdded.insertId,
+                dataMinuta.tipo_minuta[i]
+            ]);
+        }
         
         // Agregar relación de las victimas con la minuta
         for (let i = 0; i < victimas.length; i++) {
@@ -188,7 +193,27 @@ exports.createMinuta = async (dataMinuta) => {
 }
 
 // Actualizar minuta
+exports.updateMinuta = async (id_minuta, dataToUpdate) => {
+    try {
+        let query = "UPDATE Minuta SET nuc_minuta = ?, presentacion_minuta = ?, duracion_minuta = ?, resolutivos_minuta = ?, observaciones_minuta = ? WHERE id_minuta = ?";
+        let minutaUpdated = db.query(query, [
+            dataToUpdate.nuc_minuta,
+            dataToUpdate.presentacion_minuta,
+            dataToUpdate.duracion_minuta,
+            dataToUpdate.resolutivos_minuta,
+            dataToUpdate.observaciones_minuta,
+            id_minuta
+        ]);
 
+        return {
+            message: "Minuta actualizada!",
+            payload: { id_minuta },
+            code: 201
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // Eliminar minuta
 exports.deleteMinuta = async (id_minuta) => {
@@ -213,6 +238,7 @@ exports.deleteMinuta = async (id_minuta) => {
         }
         
         // Eliminar de MinutaTipoAudiencia
+        let relationDeleted = db.query("DELETE FROM MinutaTipoAudiencia WHERE id_minuta = ?", id_minuta);
 
         // Eliminar Minuta
         let minutaDeleted = await db.query("DELETE FROM Minuta WHERE id_minuta = ?", id_minuta);
@@ -241,6 +267,7 @@ exports.getDataToCreateMinuta = async () => {
         let encargados = await db.query("SELECT * FROM EncargadoSala");
         let auxiliares = await db.query("SELECT * FROM AuxiliarSala");
         let delitos = await db.query("SELECT * FROM Delito");
+        let municipios = await db.query("SELECT * FROM Municipio");
 
         return {
             message: "Data obtained!",
@@ -252,7 +279,8 @@ exports.getDataToCreateMinuta = async () => {
                 salas: salas,
                 encargados: encargados,
                 auxiliares: auxiliares,
-                delitos: delitos
+                delitos: delitos,
+                municipios: municipios
             },
             code: 200
         }

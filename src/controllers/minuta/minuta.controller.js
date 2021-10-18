@@ -61,7 +61,21 @@ exports.createMinuta = async (req, res) => {
 }
 
 // Actualizar minuta
+exports.updateMinuta = async (req, res) => {
+    try {
+        let id_minuta = req.params.id;
+        let dataToUpdate = req.body;
 
+        let serviceResponse = await serviceMinuta.updateMinuta(id_minuta, dataToUpdate);
+
+        res.status(serviceResponse.code).json({
+            message: serviceResponse.message,
+            payload: serviceResponse.payload
+        });
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // Eliminar minuta
 exports.deleteMinuta = async (req, res) => {

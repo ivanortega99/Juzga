@@ -54,3 +54,14 @@ exports.deleteCarpeta = async (id_carpeta) => {
         console.log(err);
     }
 }
+
+// Obtener delitos
+exports.getDelitos = async () => {
+    try {
+        let daoResponse = await carpetaDao.getDelitos();
+
+        return daoResponse;
+    } catch (err) {
+        console.log(err);
+    }
+}

@@ -42,8 +42,8 @@ exports.createCarpeta = async (carpetaData) => {
             carpetaData.nuc_carpeta,
             carpetaData.tipo_carpeta,
             carpetaData.presentacion_carpeta,
-            new Date(),
-            new Date(),
+            carpetaData.ingreso_carpeta,
+            carpetaData.inicio_carpeta,
             carpetaData.duracion_carpeta,
             carpetaData.judicalizada_carpeta,
             carpetaData.nuevo_carpeta,
@@ -53,17 +53,17 @@ exports.createCarpeta = async (carpetaData) => {
             carpetaData.oficio_carpeta
         ]);
 
-        if (carpetaData.delitos.length > 0) {
-            let newDelitos = carpetaData.delitos;
+        if (carpetaData.delitos_carpeta.length > 0) {
+            let newDelitos = carpetaData.delitos_carpeta;
             for (let i = 0; i < newDelitos.length; i++) {
                 if (!newDelitos[i].id_delito) {
                     let delitoAdded = await db.query("INSERT INTO Delito (delito) VALUES (?)", newDelitos[i].delito);
                     newDelitos[i].id_delito = delitoAdded.insertId;
                 }
             }
-            carpetaData.delitos = newDelitos;
+            carpetaData.delitos_carpeta = newDelitos;
 
-            let delitos = carpetaData.delitos;
+            let delitos = carpetaData.delitos_carpeta;
             for (let i = 0; i < delitos.length; i++) {
                 let relation = await db.query("INSERT INTO CarpetaDelito (id_carpeta, id_delito) VALUES (?, ?)", [carpetaCreated.insertId, delitos[i].id_delito])
             }
@@ -115,6 +115,21 @@ exports.deleteCarpeta = async (id_carpeta) => {
         return {
             message: "Carpeta eliminada!",
             payload: { id_deleted: id_carpeta },
+            code: 200
+        }
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// Obtener delitos para crear la carpeta
+exports.getDelitos = async () => {
+    try {
+        let delitos = await db.query("SELECT * FROM Delito");
+
+        return {
+            message: "Delitos obtenidos",
+            payload: delitos,
             code: 200
         }
     } catch (err) {

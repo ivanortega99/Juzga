@@ -71,11 +71,11 @@ exports.login = async (email, password) => {
     let payload = {
         id_usuario: user.id_usuario,
         id_tipo_usuario: user.id_tipo_usuario,
-        nombre: user.nombre,
-        apellidos: user.apellidos,
+        nombre: user.nombre_usuario,
+        apellidos: user.apellidos_usuario,
         email: user.email,
-        nombre_usuario: user.nombre_usuario,
-        tipo_usuario: user.tipo
+        username: user.username,
+        tipo_usuario: user.tipo_usuario
     }
 
     return [jwt.sign(payload, process.env.JWT_KEY || 'secret_key', {

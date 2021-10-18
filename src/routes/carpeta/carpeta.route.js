@@ -7,7 +7,7 @@ const carpetaController = require('../../controllers/carpeta/carpeta.controller'
 router.get('/', carpetaController.getCarpetas);
 
 // Obtener datos de carpeta
-router.get('/:id', carpetaController.getCarpeta);
+router.get('/getOne/:id', carpetaController.getCarpeta);
 
 // Crear una carpeta
 router.post('/', carpetaController.createCarpeta);
@@ -17,5 +17,8 @@ router.put('/:id', carpetaController.updateCarpeta);
 
 // Eliminar carpeta
 router.delete('/:id', carpetaController.deleteCarpeta);
+
+// Obtener delitos
+router.get('/delitos', carpetaController.getDelitos);
 
 module.exports = router;

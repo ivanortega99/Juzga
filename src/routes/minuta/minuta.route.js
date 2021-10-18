@@ -7,7 +7,7 @@ let controllerMinuta = require('../../controllers/minuta/minuta.controller');
 router.get('/', controllerMinuta.getMinutas);
 
 // Obtener una minuta
-router.get('/:id', controllerMinuta.getMinuta);
+router.get('/getOne/:id', controllerMinuta.getMinuta);
 
 // Obtener datos para crear minuta
 router.get('/data', controllerMinuta.getDataToCreateMinuta);
@@ -16,7 +16,7 @@ router.get('/data', controllerMinuta.getDataToCreateMinuta);
 router.post('/', controllerMinuta.createMinuta);
 
 // Actualizar minuta
-
+router.put('/:id', controllerMinuta.updateMinuta);
 
 // Eliminar minuta
 router.delete('/:id', controllerMinuta.deleteMinuta);
